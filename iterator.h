@@ -8,53 +8,53 @@ namespace easy_algorithm {
 
 class Iterator {
 public:
-  friend std::ostream& operator << (std::ostream& os, const Iterator& iter);        // Вывод значения элемента в поток
-  friend const std::istream& operator >> (const std::istream& is, Iterator& iter);  // Ввод значения элемента из потока
+  friend std::ostream& operator << (std::ostream& os, const Iterator& iter);        // Р’С‹РІРѕРґ Р·РЅР°С‡РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° РІ РїРѕС‚РѕРє
+  friend const std::istream& operator >> (const std::istream& is, Iterator& iter);  // Р’РІРѕРґ Р·РЅР°С‡РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° РёР· РїРѕС‚РѕРєР°
 
-  Iterator(const Iterator& iter);                               // Конструктор копирования. Создает итератор идентичный iter
-  virtual ~Iterator();                                          // Виртуальный деструктор позволяет полиморфное удаление объектов
+  Iterator(const Iterator& iter);                               // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ. РЎРѕР·РґР°РµС‚ РёС‚РµСЂР°С‚РѕСЂ РёРґРµРЅС‚РёС‡РЅС‹Р№ iter
+  virtual ~Iterator();                                          // Р’РёСЂС‚СѓР°Р»СЊРЅС‹Р№ РґРµСЃС‚СЂСѓРєС‚РѕСЂ РїРѕР·РІРѕР»СЏРµС‚ РїРѕР»РёРјРѕСЂС„РЅРѕРµ СѓРґР°Р»РµРЅРёРµ РѕР±СЉРµРєС‚РѕРІ
   
-  Iterator& operator ++ ();                                     // Префиксный инкремент итератора
-  Iterator& operator -- ();                                     // Префиксный декремент итератора
-  const Iterator& operator += (ptrdiff_t diff);                 // Изменить позицию итератора на diff вперед
-  const Iterator& operator -= (ptrdiff_t diff);                 // Изменить позицию итератора на diff назад
-  const Iterator& operator = (const Iterator& iter);            // Делает итератор идентичным iter
-  //Iterator& insert(Elem elem);                                  // Вставить элемент в позицию итератора
-                                                                // (возвращает позицию вставленного элемента)
-  void swap(Iterator& iter);                                    // Поменять значения, на которые указывают 2 итератора
-  Iterator& replace(Iterator& iter);                            // Переместить значение, на которое указывает итератов позицию iter
-  Iterator& remove();                                           // Удалить элемент, на который указывает итератор
-  const ptrdiff_t operator - (const Iterator& iter);            // Возвращает количество элементов между двумя итераторами
+  Iterator& operator ++ ();                                     // РџСЂРµС„РёРєСЃРЅС‹Р№ РёРЅРєСЂРµРјРµРЅС‚ РёС‚РµСЂР°С‚РѕСЂР°
+  Iterator& operator -- ();                                     // РџСЂРµС„РёРєСЃРЅС‹Р№ РґРµРєСЂРµРјРµРЅС‚ РёС‚РµСЂР°С‚РѕСЂР°
+  const Iterator& operator += (ptrdiff_t diff);                 // РР·РјРµРЅРёС‚СЊ РїРѕР·РёС†РёСЋ РёС‚РµСЂР°С‚РѕСЂР° РЅР° diff РІРїРµСЂРµРґ
+  const Iterator& operator -= (ptrdiff_t diff);                 // РР·РјРµРЅРёС‚СЊ РїРѕР·РёС†РёСЋ РёС‚РµСЂР°С‚РѕСЂР° РЅР° diff РЅР°Р·Р°Рґ
+  const Iterator& operator = (const Iterator& iter);            // Р”РµР»Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ РёРґРµРЅС‚РёС‡РЅС‹Рј iter
+  //Iterator& insert(Elem elem);                                  // Р’СЃС‚Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ РІ РїРѕР·РёС†РёСЋ РёС‚РµСЂР°С‚РѕСЂР°
+                                                                // (РІРѕР·РІСЂР°С‰Р°РµС‚ РїРѕР·РёС†РёСЋ РІСЃС‚Р°РІР»РµРЅРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°)
+  void swap(Iterator& iter);                                    // РџРѕРјРµРЅСЏС‚СЊ Р·РЅР°С‡РµРЅРёСЏ, РЅР° РєРѕС‚РѕСЂС‹Рµ СѓРєР°Р·С‹РІР°СЋС‚ 2 РёС‚РµСЂР°С‚РѕСЂР°
+  Iterator& replace(Iterator& iter);                            // РџРµСЂРµРјРµСЃС‚РёС‚СЊ Р·РЅР°С‡РµРЅРёРµ, РЅР° РєРѕС‚РѕСЂРѕРµ СѓРєР°Р·С‹РІР°РµС‚ РёС‚РµСЂР°С‚РѕРІ РїРѕР·РёС†РёСЋ iter
+  Iterator& remove();                                           // РЈРґР°Р»РёС‚СЊ СЌР»РµРјРµРЅС‚, РЅР° РєРѕС‚РѕСЂС‹Р№ СѓРєР°Р·С‹РІР°РµС‚ РёС‚РµСЂР°С‚РѕСЂ
+  const ptrdiff_t operator - (const Iterator& iter);            // Р’РѕР·РІСЂР°С‰Р°РµС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РјРµР¶РґСѓ РґРІСѓРјСЏ РёС‚РµСЂР°С‚РѕСЂР°РјРё
 
-  //Elem& operator * () const;                                    // Разыменование итератора
-  //Elem* operator -> () const;                                   // Выбор члена элемента _pElem
-  //Elem* getPointer() const;                                     // Возвращает указатель на элемент (_pElem)
-  bool operator < (const Iterator& iter) const;                 // Сравнение значений, на которые указывают 2 итератора
+  //Elem& operator * () const;                                    // Р Р°Р·С‹РјРµРЅРѕРІР°РЅРёРµ РёС‚РµСЂР°С‚РѕСЂР°
+  //Elem* operator -> () const;                                   // Р’С‹Р±РѕСЂ С‡Р»РµРЅР° СЌР»РµРјРµРЅС‚Р° _pElem
+  //Elem* getPointer() const;                                     // Р’РѕР·РІСЂР°С‰Р°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЌР»РµРјРµРЅС‚ (_pElem)
+  bool operator < (const Iterator& iter) const;                 // РЎСЂР°РІРЅРµРЅРёРµ Р·РЅР°С‡РµРЅРёР№, РЅР° РєРѕС‚РѕСЂС‹Рµ СѓРєР°Р·С‹РІР°СЋС‚ 2 РёС‚РµСЂР°С‚РѕСЂР°
 
 private:
-  virtual std::ostream& vPrint(std::ostream& os, const Iterator& iter) = 0;         // Вывод значения элемента в поток
-  virtual const std::istream& vInput(const std::istream& is, Iterator& ds) = 0;     // Ввод значения элемента из потока
+  virtual std::ostream& vPrint(std::ostream& os, const Iterator& iter) = 0;         // Р’С‹РІРѕРґ Р·РЅР°С‡РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° РІ РїРѕС‚РѕРє
+  virtual const std::istream& vInput(const std::istream& is, Iterator& ds) = 0;     // Р’РІРѕРґ Р·РЅР°С‡РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° РёР· РїРѕС‚РѕРєР°
 
-  virtual Iterator& vClone() = 0;                               // Возвращает ссылку на копию итератора (для конструктора копирования)
+  virtual Iterator& vClone() = 0;                               // Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° РєРѕРїРёСЋ РёС‚РµСЂР°С‚РѕСЂР° (РґР»СЏ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° РєРѕРїРёСЂРѕРІР°РЅРёСЏ)
 
-  virtual Iterator& vIncrease() = 0;                            // Соответствует operator ++
-  virtual Iterator& vDecrease() = 0;                            // Соответствует operator --
-  virtual const Iterator& vSeekIter(ptrdiff_t diff) = 0;        // Соответствует operator +=, operator -=
-  virtual const Iterator& vAssign(const Iterator& iter) = 0;    // Соответствует =
-  //virtual Iterator& vInsert(Elem elem) = 0;                     // Виртуальные функции соответствуют
-  virtual void vSwap(Iterator& iter) = 0;                       // функциям интерфейса класса (без приставки v)
-  virtual Iterator& vReplace(Iterator& iter) = 0;               // Обеспечивают полиморфное поведение объектов
+  virtual Iterator& vIncrease() = 0;                            // РЎРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ operator ++
+  virtual Iterator& vDecrease() = 0;                            // РЎРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ operator --
+  virtual const Iterator& vSeekIter(ptrdiff_t diff) = 0;        // РЎРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ operator +=, operator -=
+  virtual const Iterator& vAssign(const Iterator& iter) = 0;    // РЎРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ =
+  //virtual Iterator& vInsert(Elem elem) = 0;                     // Р’РёСЂС‚СѓР°Р»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‚
+  virtual void vSwap(Iterator& iter) = 0;                       // С„СѓРЅРєС†РёСЏРј РёРЅС‚РµСЂС„РµР№СЃР° РєР»Р°СЃСЃР° (Р±РµР· РїСЂРёСЃС‚Р°РІРєРё v)
+  virtual Iterator& vReplace(Iterator& iter) = 0;               // РћР±РµСЃРїРµС‡РёРІР°СЋС‚ РїРѕР»РёРјРѕСЂС„РЅРѕРµ РїРѕРІРµРґРµРЅРёРµ РѕР±СЉРµРєС‚РѕРІ
   virtual Iterator& vRemove() = 0;
-  virtual ptrdiff_t vDiff(const Iterator& iter) = 0;            // Соответствует operator -
+  virtual ptrdiff_t vDiff(const Iterator& iter) = 0;            // РЎРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ operator -
   
   //Elem* _pElem;
 };
 
-/*const Iterator operator + (const Iterator& iter, ptrdiff_t diff);     // Возвращает итератор с позицией на diff больше
+/*const Iterator operator + (const Iterator& iter, ptrdiff_t diff);     // Р’РѕР·РІСЂР°С‰Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ СЃ РїРѕР·РёС†РёРµР№ РЅР° diff Р±РѕР»СЊС€Рµ
 const Iterator operator + (ptrdiff_t diff, const Iterator& iter);
-const Iterator operator - (const Iterator& iter, ptrdiff_t diff);     // Возвращает итератор с позицией на diff меньше
-const Iterator operator ++ (Iterator& iter, int);                     // Постфиксный инкремент итератора
-const Iterator operator -- (Iterator& iter, int);                     // Постфиксный декремент итератора*/
+const Iterator operator - (const Iterator& iter, ptrdiff_t diff);     // Р’РѕР·РІСЂР°С‰Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ СЃ РїРѕР·РёС†РёРµР№ РЅР° diff РјРµРЅСЊС€Рµ
+const Iterator operator ++ (Iterator& iter, int);                     // РџРѕСЃС‚С„РёРєСЃРЅС‹Р№ РёРЅРєСЂРµРјРµРЅС‚ РёС‚РµСЂР°С‚РѕСЂР°
+const Iterator operator -- (Iterator& iter, int);                     // РџРѕСЃС‚С„РёРєСЃРЅС‹Р№ РґРµРєСЂРµРјРµРЅС‚ РёС‚РµСЂР°С‚РѕСЂР°*/
 }
 
 #endif
