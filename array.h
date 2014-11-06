@@ -13,10 +13,10 @@ class Array : public DataStructure {
 public:
   friend class DataStructure;
 
-  void insert(Item item, size_t index);         // Вставить элемент elem в позицию index
-  Iterator& begin() const;                               // Возвращает итератор на начало структуры данных
-  Iterator& end() const;                                 // Возвращает итератор на конец структуры данных
-  Item& operator [] (size_t index);                     // Возвращает ссылку на элемент с индексом index
+  void insert(Item item, size_t index);         // Р’СЃС‚Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ elem РІ РїРѕР·РёС†РёСЋ index
+  Iterator& begin() const;                               // Р’РѕР·РІСЂР°С‰Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ РЅР° РЅР°С‡Р°Р»Рѕ СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С…
+  Iterator& end() const;                                 // Р’РѕР·РІСЂР°С‰Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ РЅР° РєРѕРЅРµС† СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С…
+  Item& operator [] (size_t index);                     // Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° СЌР»РµРјРµРЅС‚ СЃ РёРЅРґРµРєСЃРѕРј index
   const Item& operator [] (size_t index) const;
 
 
@@ -27,9 +27,9 @@ private:
   std::ostream& vPrint(std::ostream& os, const DataStructure& ds) const;
   const std::istream& vInput(const std::istream& is, DataStructure& ds);
   /////Array& vClone() const{ return Array<Item>(0); }
-  void vInsert(Item item, size_t index);                    // Виртуальные функции соответствуют
-  void vSwap(size_t index1, size_t index2);               // функциям интерфейса класса (без приставки v)
-  void vSwap(DataStructure& ds);                              // Обеспечивают полиморфное поведение объектов
+  void vInsert(Item item, size_t index);                    // Р’РёСЂС‚СѓР°Р»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‚
+  void vSwap(size_t index1, size_t index2);               // С„СѓРЅРєС†РёСЏРј РёРЅС‚РµСЂС„РµР№СЃР° РєР»Р°СЃСЃР° (Р±РµР· РїСЂРёСЃС‚Р°РІРєРё v)
+  void vSwap(DataStructure& ds);                              // РћР±РµСЃРїРµС‡РёРІР°СЋС‚ РїРѕР»РёРјРѕСЂС„РЅРѕРµ РїРѕРІРµРґРµРЅРёРµ РѕР±СЉРµРєС‚РѕРІ
   void vReplace(size_t source, size_t dest) {}
   void vRemove(size_t index){}
   //Iterator vBegin() const{return Iterator();}
@@ -66,7 +66,7 @@ Array<Item>::Array(size_t maxSize) : DataStructure(maxSize) {
 
 template <class Item>
 Array<Item>::Array(const DataStructure& array) : DataStructure(array.maxSize()) {
-  pArray = new Item[array.maxSize()]; // maxSize поменять на size
+  pArray = new Item[array.maxSize()]; // maxSize РїРѕРјРµРЅСЏС‚СЊ РЅР° size
   for (size_t i = 0; i < array.maxSize(); ++i){
     pArray[i] = (((Array<Item>*)&array)->pArray)[i];
     /******/
@@ -77,12 +77,12 @@ Array<Item>::Array(const DataStructure& array) : DataStructure(array.maxSize()) 
 
 template <class Item>
 std::ostream& Array<Item>::vPrint(std::ostream& os, const DataStructure& ds) const {
-  return os; // Заглушка
+  return os; // Р—Р°РіР»СѓС€РєР°
 }
 
 template <class Item>
 const std::istream& Array<Item>::vInput(const std::istream& is, DataStructure& ds) {
-  return is; // Заглушка
+  return is; // Р—Р°РіР»СѓС€РєР°
 }
 
 template <class Item>
@@ -94,12 +94,12 @@ void Array<Item>::insert(Item item, size_t index) {
 
 template <class Item>
 void Array<Item>::vInsert(Item item, size_t index) {
-  // Заглушка
+  // Р—Р°РіР»СѓС€РєР°
 }
 
 template <class Item>
 void Array<Item>::vSwap(size_t index1, size_t index2) {
-  // Заглушка
+  // Р—Р°РіР»СѓС€РєР°
 }
 
 template <class Item>
@@ -117,7 +117,7 @@ void Array<Item>::vSwap(DataStructure& ds) {
   Item* temp = pArray;
   pArray = ((Array<int>*)(&ds))->getPointer();
   ((Array<int>*)(&ds))->setPointer(temp);
-  //еще поменять _size и _maxSize
+  //РµС‰Рµ РїРѕРјРµРЅСЏС‚СЊ _size Рё _maxSize
 }
 
 }

@@ -11,57 +11,57 @@ namespace easy_algorithm {
 
 class DataStructure {
 public:
-  friend std::ostream& operator << (std::ostream& os, const DataStructure& ds);         // Вывод структуры данных в поток
-  friend const std::istream& operator >> (const std::istream& is, DataStructure& ds);   // Ввод структуры данных из потока
+  friend std::ostream& operator << (std::ostream& os, const DataStructure& ds);         // Р’С‹РІРѕРґ СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С… РІ РїРѕС‚РѕРє
+  friend const std::istream& operator >> (const std::istream& is, DataStructure& ds);   // Р’РІРѕРґ СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С… РёР· РїРѕС‚РѕРєР°
 
   template <class Item>
   static DataStructure* createArray(size_t maxSize);
   template <class Item>
   static DataStructure* createArray(const DataStructure& array);
   
-  virtual ~DataStructure(){}                              // Виртуальный деструктор позволяет полиморфное удаление объектов
+  virtual ~DataStructure(){}                              // Р’РёСЂС‚СѓР°Р»СЊРЅС‹Р№ РґРµСЃС‚СЂСѓРєС‚РѕСЂ РїРѕР·РІРѕР»СЏРµС‚ РїРѕР»РёРјРѕСЂС„РЅРѕРµ СѓРґР°Р»РµРЅРёРµ РѕР±СЉРµРєС‚РѕРІ
 
-  //void insert(Elem elem, size_t index = _size - 1);     // Вставить элемент elem в позицию index
-  void swap(size_t index1, size_t index2);              // Поменять местами 2 элемента с индексами index1 и index2
-  void swap(DataStructure& ds);                         // Поменять структуры данных
-  void replace(size_t source, size_t dest);             // Переставить элемент с индексом source в позицию dest
-  void remove(size_t index);                // Удалить элемент с индексом index
-  //Iterator begin() const;                               // Возвращает итератор на начало структуры данных
-  //Iterator end() const;                                 // Возвращает итератор на конец структуры данных
-  //Elem& operator [] (size_t index);                     // Возвращает ссылку на элемент с индексом index
+  //void insert(Elem elem, size_t index = _size - 1);     // Р’СЃС‚Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ elem РІ РїРѕР·РёС†РёСЋ index
+  void swap(size_t index1, size_t index2);              // РџРѕРјРµРЅСЏС‚СЊ РјРµСЃС‚Р°РјРё 2 СЌР»РµРјРµРЅС‚Р° СЃ РёРЅРґРµРєСЃР°РјРё index1 Рё index2
+  void swap(DataStructure& ds);                         // РџРѕРјРµРЅСЏС‚СЊ СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С…
+  void replace(size_t source, size_t dest);             // РџРµСЂРµСЃС‚Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ СЃ РёРЅРґРµРєСЃРѕРј source РІ РїРѕР·РёС†РёСЋ dest
+  void remove(size_t index);                // РЈРґР°Р»РёС‚СЊ СЌР»РµРјРµРЅС‚ СЃ РёРЅРґРµРєСЃРѕРј index
+  //Iterator begin() const;                               // Р’РѕР·РІСЂР°С‰Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ РЅР° РЅР°С‡Р°Р»Рѕ СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С…
+  //Iterator end() const;                                 // Р’РѕР·РІСЂР°С‰Р°РµС‚ РёС‚РµСЂР°С‚РѕСЂ РЅР° РєРѕРЅРµС† СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С…
+  //Elem& operator [] (size_t index);                     // Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° СЌР»РµРјРµРЅС‚ СЃ РёРЅРґРµРєСЃРѕРј index
   //const Elem& operator [] (size_t index) const;
-  const DataStructure& operator = (const DataStructure& ds);    // Делает содержание структуры данных идентичной ds
+  const DataStructure& operator = (const DataStructure& ds);    // Р”РµР»Р°РµС‚ СЃРѕРґРµСЂР¶Р°РЅРёРµ СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С… РёРґРµРЅС‚РёС‡РЅРѕР№ ds
   
-  size_t size() const;                            // Возвращает количество элементов
-  size_t maxSize() const;                         // Возвращает максимальный размер структуры данных
-  bool empty() const;                             // Возвращает true, если елементов нет
+  size_t size() const;                            // Р’РѕР·РІСЂР°С‰Р°РµС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ
+  size_t maxSize() const;                         // Р’РѕР·РІСЂР°С‰Р°РµС‚ РјР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С…
+  bool empty() const;                             // Р’РѕР·РІСЂР°С‰Р°РµС‚ true, РµСЃР»Рё РµР»РµРјРµРЅС‚РѕРІ РЅРµС‚
 protected:
   const char* LengthError = "Unable to insert a new element!";
   const char* IndexError = "Index is out of range!";
-  explicit DataStructure(size_t maxSize);                 // Конструктор, задающий максимальный размер структуры данных
-                                                          // (не позволяет неявного преобразования)
-  DataStructure(const DataStructure& ds);                 // Конструктор копирования
-  //DataStructure(const Iterator& beg, const Iterator& end);            // Конструктор, инициализирующий с помощью итераторов
+  explicit DataStructure(size_t maxSize);                 // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ, Р·Р°РґР°СЋС‰РёР№ РјР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С…
+                                                          // (РЅРµ РїРѕР·РІРѕР»СЏРµС‚ РЅРµСЏРІРЅРѕРіРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ)
+  DataStructure(const DataStructure& ds);                 // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
+  //DataStructure(const Iterator& beg, const Iterator& end);            // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ, РёРЅРёС†РёР°Р»РёР·РёСЂСѓСЋС‰РёР№ СЃ РїРѕРјРѕС‰СЊСЋ РёС‚РµСЂР°С‚РѕСЂРѕРІ
 
-  bool checkIndex(size_t index);                  // Проверка индекса
+  bool checkIndex(size_t index);                  // РџСЂРѕРІРµСЂРєР° РёРЅРґРµРєСЃР°
 private:
-  virtual std::ostream& vPrint(std::ostream& os, const DataStructure& ds) const = 0;          // Вывод структуры данных в поток
-  virtual const std::istream& vInput(const std::istream& is, DataStructure& ds) = 0;    // Ввод структуры данных из потока
+  virtual std::ostream& vPrint(std::ostream& os, const DataStructure& ds) const = 0;          // Р’С‹РІРѕРґ СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С… РІ РїРѕС‚РѕРє
+  virtual const std::istream& vInput(const std::istream& is, DataStructure& ds) = 0;    // Р’РІРѕРґ СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С… РёР· РїРѕС‚РѕРєР°
 
 public:
-  /////virtual DataStructure& vClone() const = 0;                            // Возвращает ссылку на копию структуры данных
-private:                                                                        // (для конструктора копирования)
+  /////virtual DataStructure& vClone() const = 0;                            // Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° РєРѕРїРёСЋ СЃС‚СЂСѓРєС‚СѓСЂС‹ РґР°РЅРЅС‹С…
+private:                                                                        // (РґР»СЏ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂР° РєРѕРїРёСЂРѕРІР°РЅРёСЏ)
 
-  //virtual void vInsert(Elem elem, size_t index) = 0;                  // Виртуальные функции соответствуют
-  virtual void vSwap(size_t index1, size_t index2) = 0;                 // функциям интерфейса класса (без приставки v)
-  virtual void vSwap(DataStructure& ds) = 0;                            // Обеспечивают полиморфное поведение объектов
+  //virtual void vInsert(Elem elem, size_t index) = 0;                  // Р’РёСЂС‚СѓР°Р»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‚
+  virtual void vSwap(size_t index1, size_t index2) = 0;                 // С„СѓРЅРєС†РёСЏРј РёРЅС‚РµСЂС„РµР№СЃР° РєР»Р°СЃСЃР° (Р±РµР· РїСЂРёСЃС‚Р°РІРєРё v)
+  virtual void vSwap(DataStructure& ds) = 0;                            // РћР±РµСЃРїРµС‡РёРІР°СЋС‚ РїРѕР»РёРјРѕСЂС„РЅРѕРµ РїРѕРІРµРґРµРЅРёРµ РѕР±СЉРµРєС‚РѕРІ
   virtual void vReplace(size_t source, size_t dest) = 0;                
   virtual void vRemove(size_t index) = 0;
   //virtual Iterator vBegin() const = 0;
   //virtual Iterator vEnd() const = 0;
-  //virtual Elem& vGet(size_t index) = 0;                                 // Соответствует operator []
+  //virtual Elem& vGet(size_t index) = 0;                                 // РЎРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ operator []
   //virtual const Elem& vGet(size_t index) const = 0;
-  virtual const DataStructure& vAssign(const DataStructure& ds) = 0;    // Соответствует operator =
+  virtual const DataStructure& vAssign(const DataStructure& ds) = 0;    // РЎРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ operator =
   
   
 
