@@ -2,3 +2,5 @@ easy-algorithm
 ==============
 
 EasyAlgorithm
+
+русский
