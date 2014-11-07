@@ -2,12 +2,11 @@
 #define EASY_ALGORITHM_DATA_STRUCTURE_H
 
 #include <iosfwd>
-//#include "iterator.h"
-//class Iterator;
-template <class Item>
-class Array;
 
 namespace easy_algorithm {
+
+template <class Item>
+class Array;
 
 class DataStructure {
 public:
@@ -15,63 +14,64 @@ public:
   friend const std::istream& operator >> (const std::istream& is, DataStructure& ds);   // Ввод структуры данных из потока
 
   template <class Item>
-  static DataStructure* createArray(size_t maxSize);
+  static DataStructure* createArray(size_t maxSize);    // Производящие функции Array
   template <class Item>
   static DataStructure* createArray(const DataStructure& array);
   
-  virtual ~DataStructure(){}                              // Виртуальный деструктор позволяет полиморфное удаление объектов
+  virtual ~DataStructure();                             // Виртуальный деструктор позволяет полиморфное удаление объектов
 
-  //void insert(Elem elem, size_t index = _size - 1);     // Вставить элемент elem в позицию index
   void swap(size_t index1, size_t index2);              // Поменять местами 2 элемента с индексами index1 и index2
   void swap(DataStructure& ds);                         // Поменять структуры данных
   void replace(size_t source, size_t dest);             // Переставить элемент с индексом source в позицию dest
-  void remove(size_t index);                // Удалить элемент с индексом index
-  //Iterator begin() const;                               // Возвращает итератор на начало структуры данных
-  //Iterator end() const;                                 // Возвращает итератор на конец структуры данных
-  //Elem& operator [] (size_t index);                     // Возвращает ссылку на элемент с индексом index
-  //const Elem& operator [] (size_t index) const;
+  void remove(size_t index);                            // Удалить элемент с индексом index
+  bool compare(size_t index1, size_t index2);           // Возвращает true, если элемент 1 меньше элемента 2
   const DataStructure& operator = (const DataStructure& ds);    // Делает содержание структуры данных идентичной ds
   
-  size_t size() const;                            // Возвращает количество элементов
-  size_t maxSize() const;                         // Возвращает максимальный размер структуры данных
-  bool empty() const;                             // Возвращает true, если елементов нет
+  size_t Size() const;                                  // Возвращает количество элементов
+  size_t maxSize() const;                               // Возвращает максимальный размер структуры данных
+  bool empty() const;                                   // Возвращает true, если елементов нет
+
+  void swap();
+  void replace();
+  void remove();
+  void setCur1(size_t index);
+  void setCur2(size_t index);
+  size_t getCur1();
+  size_t getCur2();
+  bool compare();
+
 protected:
-  const char* LengthError = "Unable to insert a new element!";
-  const char* IndexError = "Index is out of range!";
   explicit DataStructure(size_t maxSize);                 // Конструктор, задающий максимальный размер структуры данных
                                                           // (не позволяет неявного преобразования)
   DataStructure(const DataStructure& ds);                 // Конструктор копирования
-  //DataStructure(const Iterator& beg, const Iterator& end);            // Конструктор, инициализирующий с помощью итераторов
+  
+  void checkIndex(size_t index);                          // Проверка индекса
+  void setSize(size_t size);                              // Устанавливает количество элементов
+  void setMaxSize(size_t size);                           // Устанавливает максимальный размер структуры данных
 
-  bool checkIndex(size_t index);                  // Проверка индекса
 private:
-  virtual std::ostream& vPrint(std::ostream& os, const DataStructure& ds) const = 0;          // Вывод структуры данных в поток
+  virtual std::ostream& vPrint(std::ostream& os, const DataStructure& ds) const = 0;    // Вывод структуры данных в поток
   virtual const std::istream& vInput(const std::istream& is, DataStructure& ds) = 0;    // Ввод структуры данных из потока
 
-public:
-  /////virtual DataStructure& vClone() const = 0;                            // Возвращает ссылку на копию структуры данных
-private:                                                                        // (для конструктора копирования)
+private:
+  virtual void vSwap(DataStructure& ds) = 0;
+  virtual const DataStructure& vAssign(const DataStructure& ds) = 0;    // Соответствует operator =             
 
-  //virtual void vInsert(Elem elem, size_t index) = 0;                  // Виртуальные функции соответствуют
-  virtual void vSwap(size_t index1, size_t index2) = 0;                 // функциям интерфейса класса (без приставки v)
-  virtual void vSwap(DataStructure& ds) = 0;                            // Обеспечивают полиморфное поведение объектов
-  virtual void vReplace(size_t source, size_t dest) = 0;                
-  virtual void vRemove(size_t index) = 0;
-  //virtual Iterator vBegin() const = 0;
-  //virtual Iterator vEnd() const = 0;
-  //virtual Elem& vGet(size_t index) = 0;                                 // Соответствует operator []
-  //virtual const Elem& vGet(size_t index) const = 0;
-  virtual const DataStructure& vAssign(const DataStructure& ds) = 0;    // Соответствует operator =
+  virtual void vSwap() = 0;
+  virtual void vReplace() = 0;
+  virtual void vRemove() = 0;
+  virtual void vSetCur1(size_t index) = 0;
+  virtual void vSetCur2(size_t index) = 0;
+  virtual bool vCompare() = 0;
   
-  
-
   size_t _size;
   size_t _maxSize;
+  size_t _cur1, _cur2;
 };
 
 template <class Item>
 static DataStructure* DataStructure::createArray(size_t maxSize) {
-  return new Array<Item>(5);
+  return new Array<Item>(maxSize);
 }
 
 template <class Item>

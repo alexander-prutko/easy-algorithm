@@ -3,30 +3,37 @@
 
 namespace easy_algorithm {
 
-bool DataStructure::checkIndex(size_t index) {
-  return !(index >= _size || index < 0);
+const char* LengthError = "Unable to insert a new itement!";
+const char* IndexError = "Index is out of range!";
+
+void DataStructure::checkIndex(size_t index) {
+  if((index >= _size || index < 0))
+    throw std::out_of_range(IndexError);
 }
 
 DataStructure::DataStructure(size_t maxSize)
-  : _size(0), _maxSize(maxSize) {}
+  : _size(0), _maxSize(maxSize), _cur1(0), _cur2(0) {}
 
 DataStructure::DataStructure(const DataStructure& ds)
-  : _size(ds.size()), _maxSize(ds.maxSize()) {
-//  *this = ds.vClone();
+  : _size(ds.Size()), _maxSize(ds.maxSize()), _cur1(0), _cur2(0) {
 }
 
-/*DataStructure::DataStructure(const Iterator& beg, const Iterator& end)
-  : _size(0), _maxSize(end-beg) {
-  for(Iterator iter = beg; beg != end; ++iter)
-    insert(*iter);
-}*/
+DataStructure::~DataStructure() {}
 
-size_t DataStructure::size() const {
+size_t DataStructure::Size() const {
   return _size;
+}
+
+void DataStructure::setSize(size_t size) {
+  _size = size;
 }
 
 size_t DataStructure::maxSize() const {
   return _maxSize;
+}
+
+void DataStructure::setMaxSize(size_t size) {
+  _maxSize = size;
 }
 
 bool DataStructure::empty() const {
@@ -41,21 +48,14 @@ const std::istream& operator >> (const std::istream& is, DataStructure& ds) {
   return ds.vInput(is, ds);
 }
 
-/*void DataStructure::insert(Elem elem, size_t index = _size - 1) {
-  if(_size == _maxSize)
-    throw std::length_error(LengthError);
-  if(index > _size || index < 0)
-    throw std::out_of_range(IndexError);
-  vInsert(elem, index);
-  ++_size;
-}*/
-
-
 void DataStructure::swap(size_t index1, size_t index2) {
-  if(!checkIndex(index1) || !checkIndex(index2))
-    throw std::out_of_range(IndexError);
-  if(index1 != index2)
-    vSwap(index1, index2);
+  checkIndex(index1);
+  checkIndex(index2);
+  if(index1 != index2) {
+    setCur1(index1);
+    setCur2(index2);
+    vSwap();
+  }
 }
 
 void DataStructure::swap(DataStructure& ds) {
@@ -63,46 +63,73 @@ void DataStructure::swap(DataStructure& ds) {
 }
 
 void DataStructure::replace(size_t source, size_t dest) {
-  if(!checkIndex(source) || !checkIndex(dest))
-    throw std::out_of_range(IndexError);
-  if(source != dest)
-    vReplace(source, dest);
+  checkIndex(source);
+  checkIndex(dest);
+  if(source != dest) {
+    setCur1(source);
+    setCur2(dest);
+    vReplace();
+  }
 }
 
 
 void DataStructure::remove(size_t index) {
-  if(!checkIndex(index))
-    throw std::out_of_range(IndexError);
-  vRemove(index);
+  checkIndex(index);
+  setCur1(index);
+  vRemove();
 }
-
-/*Iterator DataStructure::begin() const {
-  return vBegin();
-}*/
-
-/*Iterator DataStructure::end() const {
-  return vEnd();
-}*/
-
-/*Elem& DataStructure::operator [] (size_t index) {
-  if(!checkIndex(index))
-    throw std::out_of_range(IndexError);
-  return vGet(index);
-}*/
-
-/*const Elem& DataStructure::operator [] (size_t index) const {
-  if(!checkIndex(index))
-    throw std::out_of_range(IndexError);
-  return vGet(index);
-}*/
 
 const DataStructure& DataStructure::operator = (const DataStructure& ds) {
   vAssign(ds);
   return *this;
-//  DataStructure temp(ds);
-//  vSwap(temp);
 }
 
+bool DataStructure::compare(size_t index1, size_t index2) {
+  checkIndex(index1);
+  checkIndex(index2);
+  setCur1(index1);
+  setCur2(index2);
+  return vCompare();
+}
 
+void DataStructure::setCur1(size_t index) {
+  checkIndex(index);
+  _cur1 = index;
+  vSetCur1(index);
+}
+
+void DataStructure::setCur2(size_t index) {
+  checkIndex(index);
+  _cur2 = index;
+  vSetCur2(index);
+}
+
+size_t DataStructure::getCur1() {
+  return _cur1;
+}
+
+size_t DataStructure::getCur2() {
+  return _cur2;
+}
+
+bool DataStructure::compare() {
+  if (_cur1 != _cur2)
+    return vCompare();
+  return false;
+}
+
+void DataStructure::swap() {
+  if (_cur1 != _cur2)
+    vSwap();
+}
+
+void DataStructure::replace() {
+  if (_cur1 != _cur2)
+    vReplace();
+}
+
+void DataStructure::remove() {
+  vRemove();
+}
 
 }
