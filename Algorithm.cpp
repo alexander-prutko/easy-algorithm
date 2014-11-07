@@ -1,5 +1,6 @@
 #include <iostream>
 #include <time.h>
+#include <stdlib.h>
 #include "array.h"
 #include "sort_algorithm.h"
 #include "sort.h"
