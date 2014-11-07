@@ -2,26 +2,35 @@
 
 namespace easy_algorithm {
 
-void SortAlgorithm::sort(DataStructure* pDS) {
-  vSort(pDS);
+void SortAlgorithm::sort(DataStructure* pDS, TimeObserver* pTO) {
+  vSort(pDS, pTO);
 }
 
+/*void SortAlgorithm::notifyTO(clock_t ms, TimeObserver* pTO) {
+  pTO->update(ms);
+}*/
 
-void SelectionSort::vSort(DataStructure* pDS) {
+void SelectionSort::vSort(DataStructure* pDS, TimeObserver* pTO) {
   size_t s = pDS->Size();
 
-  for (size_t i = 0; i < s - 1; ++i) {
-    //pDS->setCur2(i);
-    size_t min = i;
-    for (size_t j = i; j < s; ++j) {
-      pDS->setCur1(j);
+  //notifyTO(12, pTO);
+  {
+    Timer t(pTO, 0);
+
+
+    for (size_t i = 0; i < s - 1; ++i) {
+      //pDS->setCur2(i);
+      size_t min = i;
+      for (size_t j = i; j < s; ++j) {
+        pDS->setCur1(j);
+        pDS->setCur2(min);
+        if (pDS->compare()/*a[j] < a[min]*/)
+          min = j;
+      }
+      pDS->setCur1(i);
       pDS->setCur2(min);
-      if (pDS->compare()/*a[j] < a[min]*/)
-        min = j;
+      pDS->swap();// exch(a[i], a[min]);
     }
-    pDS->setCur1(i);
-    pDS->setCur2(min);
-    pDS->swap();// exch(a[i], a[min]);
   }
 }
 

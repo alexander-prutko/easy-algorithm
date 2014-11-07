@@ -70,12 +70,12 @@ private:
 };
 
 template <class Item>
-static DataStructure* DataStructure::createArray(size_t maxSize) {
+DataStructure* DataStructure::createArray(size_t maxSize) {
   return new Array<Item>(maxSize);
 }
 
 template <class Item>
-static DataStructure* DataStructure::createArray(const DataStructure& array) {
+DataStructure* DataStructure::createArray(const DataStructure& array) {
   return new Array<Item>(array);
 }
 

@@ -8,12 +8,13 @@ namespace easy_algorithm {
   
 class Sort {
 public:
-  Sort(DataStructure* ds, SortAlgorithm* sa);
+  Sort(DataStructure* ds, SortAlgorithm* sa, TimeObserver* to);
   void sort();
 
 private:
   DataStructure* _pDS;
   SortAlgorithm* _pSA;
+  TimeObserver* _pTO;
 };
 
 }

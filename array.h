@@ -2,6 +2,7 @@
 #define EASY_ALGORITHM_ARRAY_H
 
 #include <iosfwd>
+#include <stdexcept>
 #include "data_structure.h"
 
 namespace easy_algorithm {
