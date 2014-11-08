@@ -29,7 +29,7 @@ public:
 protected:
   class Timer {
   public:
-    Timer(TimeObserver* pTO, int t) : _pTO(pTO), type(t) { QueryPerformanceCounter((LARGE_INTEGER*)&t1); }
+    Timer(TimeObserver* pTO, int t) : type(t), _pTO(pTO) { QueryPerformanceCounter((LARGE_INTEGER*)&t1); }
     ~Timer() {
       QueryPerformanceCounter((LARGE_INTEGER*)&t2);
       QueryPerformanceFrequency((LARGE_INTEGER*)&freq);
@@ -49,8 +49,8 @@ protected:
 
   private:
     int type;
-    double t1, t2, freq;
     TimeObserver* _pTO;
+    double t1, t2, freq;
   };
 
 private:
