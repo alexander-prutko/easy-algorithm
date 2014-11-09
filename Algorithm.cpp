@@ -35,8 +35,9 @@ int main() {
 
   cin.get();
 
-  ArrayIterator<int>* ai = new ArrayIterator<int>;
-  ai->operator++();
+  Iterator<int>* ai = new ArrayIterator<int>;
+  cin>>(*ai);
+  //ai->operator++();
 
   return 0;
 }
