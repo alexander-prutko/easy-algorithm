@@ -17,7 +17,7 @@ public:
   Iterator() : _pItem(0) {}/******/
   Iterator(const Iterator& iter);                               // Конструктор копирования. Создает итератор идентичный iter
   virtual ~Iterator() {}                                        // Виртуальный деструктор позволяет полиморфное удаление объектов
-  
+
   Iterator& operator ++ ();                                     // Префиксный инкремент итератора
   Iterator& operator -- ();                                     // Префиксный декремент итератора
   const Iterator& operator += (ptrdiff_t diff);                 // Изменить позицию итератора на diff вперед
@@ -30,11 +30,12 @@ public:
 //  Iterator& replace(Iterator& iter);                            // Переместить значение, на которое указывает итератов позицию iter
 //  Iterator& remove();                                           // Удалить элемент, на который указывает итератор
   ptrdiff_t operator - (const Iterator& iter);            // Возвращает количество элементов между двумя итераторами
-  
+
   Item& operator * () const;                                    // Разыменование итератора
   Item* operator -> () const;                                   // Выбор члена элемента _pItem
   Item* getPointer() const;                                     // Возвращает указатель на элемент (_pItem)
   bool operator < (const Iterator& iter) const;                 // Сравнение значений, на которые указывают 2 итератора
+  void checkPointer();
 
 private:
   virtual std::ostream& vPrint(std::ostream& os, Iterator& iter) = 0;         // Вывод значения элемента в поток
@@ -51,23 +52,27 @@ private:
 //  virtual Iterator& vReplace(Iterator& iter) = 0;               // Обеспечивают полиморфное поведение объектов
 //  virtual Iterator& vRemove() = 0;
   virtual ptrdiff_t vDiff(const Iterator& iter) = 0;            // Соответствует operator -
-  
+
 protected:
   Item* _pItem;
 };
 
 template <class Item>
 std::ostream& operator << (std::ostream& os, Iterator<Item>& iter) {
-  if (!iter.getPointer())
-    throw std::exception();
+  iter.checkPointer();
   return iter.vPrint(os, iter);
 }
 
 template <class Item>
 const std::istream& operator >> (const std::istream& is, Iterator<Item>& iter) {
-  if (!iter.getPointer())
-    throw std::exception();
+  iter.checkPointer();
   return iter.vInput(is, iter);
+}
+
+template <class Item>
+void Iterator<Item>::checkPointer() {
+  if (!_pItem)
+    throw std::exception();
 }
 
 template <class Item>
@@ -76,15 +81,13 @@ Iterator<Item>::Iterator(const Iterator<Item>& iter)
 
 template <class Item>
 Item& Iterator<Item>::operator * () const {
-  if (!_pItem)
-    throw std::exception();
+  checkPointer();
   return *_pItem;
 }
 
 template <class Item>
 Item* Iterator<Item>::operator -> () const {
-  if (!_pItem)
-    throw std::exception();
+  checkPointer();
   return _pItem;
 }
 
@@ -95,36 +98,32 @@ Item* Iterator<Item>::getPointer() const {
 
 template <class Item>
 bool Iterator<Item>::operator < (const Iterator<Item>& iter) const {
-  if (!_pItem || !iter.getPointer())
-    throw std::exception();
+  checkPointer();
+  iter.checkPointer();
   return *(*this) < *iter ? true : false;
 }
 
 template <class Item>
 const Iterator<Item> operator + (const Iterator<Item>& iter, ptrdiff_t diff) {
-  if (!iter.getPointer())
-    throw std::exception();
+  iter.checkPointer();
   return Iterator<Item>(iter) += diff;
 }
 
 template <class Item>
 const Iterator<Item> operator + (ptrdiff_t diff, const Iterator<Item>& iter) {
-  if (!iter.getPointer())
-    throw std::exception();
+  iter.checkPointer();
   return iter + diff;
 }
 
 template <class Item>
 const Iterator<Item> operator - (const Iterator<Item>& iter, ptrdiff_t diff) {
-  if (!iter.getPointer())
-    throw std::exception();
+  iter.checkPointer();
   return Iterator<Item>(iter) -= diff;
 }
 
 template <class Item>
 const Iterator<Item> operator ++ (Iterator<Item>& iter, int) {
-  if (!iter.getPointer())
-    throw std::exception();
+  iter.checkPointer();
   Iterator<Item> ret(iter);
   ++iter;
   return ret;
@@ -132,8 +131,7 @@ const Iterator<Item> operator ++ (Iterator<Item>& iter, int) {
 
 template <class Item>
 const Iterator<Item> operator -- (Iterator<Item>& iter, int) {
-  if (!iter.getPointer())
-    throw std::exception();
+ iter.checkPointer();
   Iterator<Item> ret(iter);
   --iter;
   return ret;
@@ -142,29 +140,25 @@ const Iterator<Item> operator -- (Iterator<Item>& iter, int) {
 
 template <class Item>
 Iterator<Item>& Iterator<Item>::operator ++ () {
-  if (!_pItem)
-    throw std::exception();
+  checkPointer();
   return vIncrease();
 }
 
 template <class Item>
 Iterator<Item>& Iterator<Item>::operator -- () {
-  if (!_pItem)
-    throw std::exception();
+  checkPointer();
   return vDecrease();
 }
 
 template <class Item>
 const Iterator<Item>& Iterator<Item>::operator += (ptrdiff_t diff) {
-  if (!_pItem)
-    throw std::exception();
+  checkPointer();
   return vSeekIter(diff);
 }
 
 template <class Item>
 const Iterator<Item>& Iterator<Item>::operator -= (ptrdiff_t diff) {
-  if (!_pItem)
-    throw std::exception();
+  checkPointer();
   return vSeekIter(-diff);
 }
 
@@ -175,8 +169,7 @@ const Iterator<Item>& Iterator<Item>::operator = (const Iterator<Item>& iter) {
 
 template <class Item>
 const Iterator<Item>& Iterator<Item>::operator = (const Item& item) {
-  if (!_pItem)
-    throw std::exception();
+  checkPointer();
   return vInsert(item);
 }
 
@@ -187,8 +180,8 @@ Iterator<Item>& Iterator<Item>::insert(Item item) {
 
 template <class Item>
 void Iterator<Item>::swap(Iterator<Item>& iter) {
-  if (!_pItem || !iter.getPointer())
-    throw std::exception();
+  checkPointer();
+  iter.checkPointer();
   vSwap(iter);
 }
 
@@ -204,22 +197,11 @@ Iterator<Item>& Iterator<Item>::remove() {
 
 template <class Item>
 ptrdiff_t Iterator<Item>::operator - (const Iterator<Item>& iter) {
-  if (!_pItem || !iter.getPointer())
-    throw std::exception();
+  checkPointer();
+  iter.checkPointer();
   return vDiff(iter);
 }
 
-/*template <class Item>
-const Iterator<Item> operator + (const Iterator<Item>& iter, ptrdiff_t diff);     // Возвращает итератор с позицией на diff больше
-template <class Item>
-const Iterator<Item> operator + (ptrdiff_t diff, const Iterator<Item>& iter);
-template <class Item>
-const Iterator<Item> operator - (const Iterator<Item>& iter, ptrdiff_t diff);     // Возвращает итератор с позицией на diff меньше
-template <class Item>
-const Iterator<Item> operator ++ (Iterator<Item>& iter, int);                     // Постфиксный инкремент итератора
-template <class Item>
-const Iterator<Item> operator -- (Iterator<Item>& iter, int);                     // Постфиксный декремент итератора
-*/
 }
 
 #endif
