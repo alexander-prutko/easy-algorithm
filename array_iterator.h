@@ -2,6 +2,7 @@
 #define EASY_ALGORITHM_ARRAY_ITERATOR_H
 
 #include <iosfwd>
+#include <stdexcept>
 #include "iterator.h"
 
 namespace easy_algorithm {
