@@ -9,9 +9,11 @@ namespace easy_algorithm {
 template <class Item>
 class Iterator {
 public:
-  friend std::ostream& operator << (std::ostream& os, const Iterator& iter);        // Вывод значения элемента в поток
-  friend const std::istream& operator >> (const std::istream& is, Iterator& iter);  // Ввод значения элемента из потока
-  Iterator(){}/******/
+  template <class Elem>
+  friend std::ostream& operator << (std::ostream& os, Iterator<Elem>& iter);        // Вывод значения элемента в поток
+  template <class Elem>
+  friend const std::istream& operator >> (const std::istream& is, Iterator<Elem>& iter);  // Ввод значения элемента из потока
+  Iterator() : _pItem(0) {}/******/
   Iterator(const Iterator& iter);                               // Конструктор копирования. Создает итератор идентичный iter
   virtual ~Iterator() {}                                        // Виртуальный деструктор позволяет полиморфное удаление объектов
   
@@ -26,7 +28,7 @@ public:
   void swap(Iterator& iter);                                    // Поменять значения, на которые указывают 2 итератора
 //  Iterator& replace(Iterator& iter);                            // Переместить значение, на которое указывает итератов позицию iter
 //  Iterator& remove();                                           // Удалить элемент, на который указывает итератор
-  const ptrdiff_t operator - (const Iterator& iter);            // Возвращает количество элементов между двумя итераторами
+  ptrdiff_t operator - (const Iterator& iter);            // Возвращает количество элементов между двумя итераторами
   
   Item& operator * () const;                                    // Разыменование итератора
   Item* operator -> () const;                                   // Выбор члена элемента _pItem
@@ -34,7 +36,7 @@ public:
   bool operator < (const Iterator& iter) const;                 // Сравнение значений, на которые указывают 2 итератора
 
 private:
-  virtual std::ostream& vPrint(std::ostream& os, const Iterator& iter) = 0;         // Вывод значения элемента в поток
+  virtual std::ostream& vPrint(std::ostream& os, Iterator& iter) = 0;         // Вывод значения элемента в поток
   virtual const std::istream& vInput(const std::istream& is, Iterator& ds) = 0;     // Ввод значения элемента из потока
 
   //virtual Iterator& vClone() = 0;                               // Возвращает ссылку на копию итератора (для конструктора копирования)
@@ -54,7 +56,7 @@ protected:
 };
 
 template <class Item>
-std::ostream& operator << (std::ostream& os, const Iterator<Item>& iter) {
+std::ostream& operator << (std::ostream& os, Iterator<Item>& iter) {
   return iter.vPrint(os, iter);
 }
 
@@ -168,7 +170,7 @@ Iterator<Item>& Iterator<Item>::remove() {
 }*/
 
 template <class Item>
-const ptrdiff_t Iterator<Item>::operator - (const Iterator<Item>& iter) {
+ptrdiff_t Iterator<Item>::operator - (const Iterator<Item>& iter) {
   return vDiff(iter);
 }
 
