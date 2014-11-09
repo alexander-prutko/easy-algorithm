@@ -52,8 +52,9 @@ Array<Item>::Array(size_t maxSize) : DataStructure(maxSize) {
 template <class Item>
 Array<Item>::Array(const DataStructure& array) : DataStructure(array) {
   pArray = new Item[array.maxSize()]; 
+  const Array<Item>* ptrArray = dynamic_cast<const Array<Item>*>(&array);   // Преобразование к Array<Item>*, т.к. этот конструктор вызовется точно для Array
   for (size_t i = 0; i < array.Size(); ++i) {
-    pArray[i] = ((Array<Item>*)(&array))->pArray[i];  // Преобразование к Array<Item>*, т.к. этот конструктор вызовется точно для Array
+    pArray[i] = ptrArray->pArray[i];
   }
   _pCur1 = _pCur2 = pArray;
 }
@@ -106,24 +107,26 @@ void Array<Item>::setPointer(Item* p) {
 template <class Item>
 void Array<Item>::vSwap(DataStructure& ds) {
   Item* temp = pArray;
-  pArray = ((Array<int>*)(&ds))->getPointer();    // Преобразование к Array<Item>*, т.к. vSwap вызовется точно для Array
-  ((Array<int>*)(&ds))->setPointer(temp);
+  Array<Item>* ptrArray = dynamic_cast<Array<Item>*>(&ds);
+
+  pArray = ptrArray->getPointer();    // Преобразование к Array<Item>*, т.к. vSwap вызовется точно для Array
+  ptrArray->setPointer(temp);
 
   size_t tmp = maxSize();
   setMaxSize(ds.maxSize());
-  ((Array<int>*)(&ds))->setMaxSize(tmp);
+  ptrArray->setMaxSize(tmp);
 
   tmp = Size();
   setSize(ds.Size());
-  ((Array<int>*)(&ds))->setSize(tmp);
+  ptrArray->setSize(tmp);
 
   if (Size()) {
     setCur1(0);
     setCur2(0);
   }
   if (tmp) {
-    ((Array<int>*)(&ds))->setCur1(0);
-    ((Array<int>*)(&ds))->setCur2(0);
+    ptrArray->setCur1(0);
+    ptrArray->setCur2(0);
   }
 }
 

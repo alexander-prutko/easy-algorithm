@@ -4,6 +4,7 @@
 #include "array.h"
 #include "sort_algorithm.h"
 #include "sort.h"
+#include "array_iterator.h"
 
 int main() {
   using namespace std;
@@ -20,19 +21,22 @@ int main() {
   SelectionSort* ss = new SelectionSort;
   TimeObserver* to = new TimeObserver;
 
-  for (size_t i = 0; i < pa->Size(); ++i)
-    cout<<(*pa)[i]<<" ";
-  cout << endl;
+//  for (size_t i = 0; i < pa->Size(); ++i)
+//    cout<<(*pa)[i]<<" ";
+//  cout << endl;
 
   Sort s(pA,ss,to);
   s.sort();
 
   cin.get();
 
-  for (size_t i = 0; i < pa->Size(); ++i)
-    cout << (*pa)[i] << " ";
+  //for (size_t i = 0; i < pa->Size(); ++i)
+  //  cout << (*pa)[i] << " ";
 
   cin.get();
+
+  ArrayIterator<int>* ai = new ArrayIterator<int>;
+  ai->operator++();
 
   return 0;
 }
