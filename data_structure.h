@@ -2,11 +2,14 @@
 #define EASY_ALGORITHM_DATA_STRUCTURE_H
 
 #include <iosfwd>
+#include <vector>
 
 namespace easy_algorithm {
 
 template <class Item>
 class Array;
+template <class Item>
+class VectorAdapter;
 
 class DataStructure {
 public:
@@ -17,6 +20,8 @@ public:
   static DataStructure* createArray(size_t maxSize);    // Производящие функции Array
   template <class Item>
   static DataStructure* createArray(const DataStructure& array);
+  template <class Item>
+  static DataStructure* createVectorAdapter(std::vector<Item>& array);
   
   virtual ~DataStructure();                             // Виртуальный деструктор позволяет полиморфное удаление объектов
 
@@ -77,6 +82,11 @@ DataStructure* DataStructure::createArray(size_t maxSize) {
 template <class Item>
 DataStructure* DataStructure::createArray(const DataStructure& array) {
   return new Array<Item>(array);
+}
+
+template <class Item>
+DataStructure* DataStructure::createVectorAdapter(std::vector<Item>& array) {
+  return new VectorAdapter<Item>(array);
 }
 
 }

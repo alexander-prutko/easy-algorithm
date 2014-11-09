@@ -1,19 +1,20 @@
-#ifndef EASY_ALGORITHM_ARRAY_H
-#define EASY_ALGORITHM_ARRAY_H
+#ifndef EASY_ALGORITHM_VECTOR_ADAPTER_H
+#define EASY_ALGORITHM_VECTOR_ADAPTER_H
 
 #include <iosfwd>
 #include <stdexcept>
+#include <vector>
 #include "data_structure.h"
 #include "array_iterator.h"
 
 namespace easy_algorithm {
 
 template <class Item>
-class Array : public DataStructure {
+class VectorAdapter : public DataStructure {
 public:
   friend class DataStructure;
 
-  virtual ~Array();
+  virtual ~VectorAdapter();
 
   void insert(Item item, size_t index);           // Вставить элемент item в позицию index
   void insert(Item item);
@@ -28,8 +29,7 @@ protected:      // protected?
   void setPointer(Item*);
   
 private:
-  Array(size_t maxSize);                                    // Конструкторы закрытые, объекты класса Array создаются
-  Array(const DataStructure& array);                        // с помощью производящих функций класса DataStructure
+  VectorAdapter(std::vector<Item>& array);                        
 
   std::ostream& vPrint(std::ostream& os, const DataStructure& ds) const;
   const std::istream& vInput(const std::istream& is, DataStructure& ds);
@@ -43,48 +43,40 @@ private:
   void vSetCur2(size_t index);
   bool vCompare();
 
+  std::vector<Item>* pVector;
   Item* pArray;
   Item *_pCur1, *_pCur2;
 };
 
 template <class Item>
-ArrayIterator<Item> Array<Item>::begin() const {
+ArrayIterator<Item> VectorAdapter<Item>::begin() const {
   return ArrayIterator<Item>(pArray);
 }
 
 template <class Item>
-ArrayIterator<Item> Array<Item>::end() const {
+ArrayIterator<Item> VectorAdapter<Item>::end() const {
   return ArrayIterator<Item>(&(pArray[Size()]));
 }
 
 template <class Item>
-Array<Item>::Array(size_t maxSize) : DataStructure(maxSize) {
-  pArray = new Item[maxSize];
+VectorAdapter<Item>::VectorAdapter(std::vector<Item>& array) : DataStructure(array.size()) {
+  setSize(array.size());
+  pArray = &(array[0]); 
   _pCur1 = _pCur2 = pArray;
 }
 
 template <class Item>
-Array<Item>::Array(const DataStructure& array) : DataStructure(array) {
-  pArray = new Item[array.maxSize()]; 
-  const Array<Item>* ptrArray = dynamic_cast<const Array<Item>*>(&array);   // Преобразование к Array<Item>*, т.к. этот конструктор вызовется точно для Array
-  for (size_t i = 0; i < array.Size(); ++i) {
-    pArray[i] = ptrArray->pArray[i];
-  }
-  _pCur1 = _pCur2 = pArray;
-}
-
-template <class Item>
-std::ostream& Array<Item>::vPrint(std::ostream& os, const DataStructure& ds) const {
+std::ostream& VectorAdapter<Item>::vPrint(std::ostream& os, const DataStructure& ds) const {
   return os; // Заглушка
 }
 
 template <class Item>
-const std::istream& Array<Item>::vInput(const std::istream& is, DataStructure& ds) {
+const std::istream& VectorAdapter<Item>::vInput(const std::istream& is, DataStructure& ds) {
   return is; // Заглушка
 }
 
 template <class Item>
-void Array<Item>::insert(Item item) {
+void VectorAdapter<Item>::insert(Item item) {
   size_t size = Size();
   if(size == maxSize())
     throw std::length_error("Unable to insert a new itement!");
@@ -92,7 +84,7 @@ void Array<Item>::insert(Item item) {
 }
 
 template <class Item>
-void Array<Item>::insert(Item item, size_t index) {
+void VectorAdapter<Item>::insert(Item item, size_t index) {
   size_t size = Size();
   if(size >= maxSize())
     throw std::length_error("Unable to insert a new itement!");
@@ -109,21 +101,21 @@ void Array<Item>::insert(Item item, size_t index) {
 }
 
 template <class Item>
-Item* Array<Item>::getPointer() const {
+Item* VectorAdapter<Item>::getPointer() const {
   return pArray;
 }
 
 template <class Item>
-void Array<Item>::setPointer(Item* p) {
+void VectorAdapter<Item>::setPointer(Item* p) {
   pArray = p;
 }
 
 template <class Item>
-void Array<Item>::vSwap(DataStructure& ds) {
+void VectorAdapter<Item>::vSwap(DataStructure& ds) {
   Item* temp = pArray;
-  Array<Item>* ptrArray = dynamic_cast<Array<Item>*>(&ds);
+  VectorAdapter<Item>* ptrArray = dynamic_cast<VectorAdapter<Item>*>(&ds);
 
-  pArray = ptrArray->getPointer();    // Преобразование к Array<Item>*, т.к. vSwap вызовется точно для Array
+  pArray = ptrArray->getPointer();    // Преобразование к VectorAdapter<Item>*, т.к. vSwap вызовется точно для VectorAdapter
   ptrArray->setPointer(temp);
 
   size_t tmp = maxSize();
@@ -145,19 +137,19 @@ void Array<Item>::vSwap(DataStructure& ds) {
 }
 
 template <class Item>
-Item& Array<Item>::operator [] (size_t index) {
+Item& VectorAdapter<Item>::operator [] (size_t index) {
   checkIndex(index);
   return pArray[index];
 }
 
 template <class Item>
-const Item& Array<Item>::operator [] (size_t index) const {
+const Item& VectorAdapter<Item>::operator [] (size_t index) const {
   checkIndex(index);
   return pArray[index];
 }
 
 template <class Item>
-const DataStructure& Array<Item>::vAssign(const DataStructure& ds) {
+const DataStructure& VectorAdapter<Item>::vAssign(const DataStructure& ds) {
   DataStructure* temp = DataStructure::createArray<Item>(ds);
   swap(*temp);
   delete temp;
@@ -165,32 +157,32 @@ const DataStructure& Array<Item>::vAssign(const DataStructure& ds) {
 }
 
 template <class Item>
-Array<Item>::~Array() {
+VectorAdapter<Item>::~VectorAdapter() {
   delete [] (pArray);
 }
 
 template <class Item>
-void Array<Item>::vSetCur1(size_t index) {
+void VectorAdapter<Item>::vSetCur1(size_t index) {
   _pCur1 = &pArray[index];
 }
 
 template <class Item>
-void Array<Item>::vSetCur2(size_t index) {
+void VectorAdapter<Item>::vSetCur2(size_t index) {
   _pCur2 = &pArray[index];
 }
 
 template <class Item>
-bool Array<Item>::vCompare() {
+bool VectorAdapter<Item>::vCompare() {
   return *_pCur1 < *_pCur2;
 }
 
 template <class Item>
-void Array<Item>::vSwap() {
+void VectorAdapter<Item>::vSwap() {
   std::swap(*_pCur1, *_pCur2);
 }
 
 template <class Item>
-void Array<Item>::vReplace() {
+void VectorAdapter<Item>::vReplace() {
   size_t cur1 = getCur1();
   size_t cur2 = getCur2();
   if (cur1 < cur2) {
@@ -208,7 +200,7 @@ void Array<Item>::vReplace() {
 }
 
 template <class Item>
-void Array<Item>::vRemove() {
+void VectorAdapter<Item>::vRemove() {
   size_t size = Size();
   size_t index = getCur1();
   if (index < size - 1) {

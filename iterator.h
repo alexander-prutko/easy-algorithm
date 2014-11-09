@@ -35,7 +35,9 @@ public:
   Item* operator -> () const;                                   // Выбор члена элемента _pItem
   Item* getPointer() const;                                     // Возвращает указатель на элемент (_pItem)
   bool operator < (const Iterator& iter) const;                 // Сравнение значений, на которые указывают 2 итератора
-  void checkPointer();
+  void checkPointer() const;
+  bool operator == (const Iterator& iter) const;
+  bool operator != (const Iterator& iter) const;
 
 private:
   virtual std::ostream& vPrint(std::ostream& os, Iterator& iter) = 0;         // Вывод значения элемента в поток
@@ -70,7 +72,17 @@ const std::istream& operator >> (const std::istream& is, Iterator<Item>& iter) {
 }
 
 template <class Item>
-void Iterator<Item>::checkPointer() {
+bool Iterator<Item>::operator == (const Iterator& iter) const {
+  return _pItem == iter.getPointer();
+}
+
+template <class Item>
+bool Iterator<Item>::operator != (const Iterator& iter) const {
+  return !operator ==(iter);
+}
+
+template <class Item>
+void Iterator<Item>::checkPointer() const {
   if (!_pItem)
     throw std::exception();
 }

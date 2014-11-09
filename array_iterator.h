@@ -10,6 +10,7 @@ template <class Item>
 class ArrayIterator : public Iterator<Item> {
 public:
   ArrayIterator(const Iterator<Item>& iter);                                // Конструктор копирования. Создает итератор идентичный iter
+  ArrayIterator(Item* item);
   virtual ~ArrayIterator() {}                                               // Виртуальный деструктор позволяет полиморфное удаление объектов
   ArrayIterator() : Iterator<Item>() {} /******/
 private:
@@ -32,6 +33,11 @@ protected:
   using Iterator<Item>::_pItem;
 
 };
+
+template <class Item>
+ArrayIterator<Item>::ArrayIterator(Item* item) : Iterator<Item>() {
+  _pItem = item;
+}
 
 template <class Item>
 std::ostream& ArrayIterator<Item>::vPrint(std::ostream& os, Iterator<Item>& iter) {
