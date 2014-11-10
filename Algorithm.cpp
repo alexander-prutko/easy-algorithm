@@ -52,6 +52,7 @@ int main() {
   DataStructure* pVA = DataStructure::createVectorAdapter<int>(vv);
   Sort s2(pVA, ss, to);
   s2.sort();
+  //(dynamic_cast<VectorAdapter<int>*>(pVA))->insert(1);
 
   VectorAdapter<int>* pva = dynamic_cast<VectorAdapter<int>*>(pVA);
   ArrayIterator<int> ib2 = (pva->begin());

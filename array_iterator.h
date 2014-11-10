@@ -7,37 +7,42 @@
 namespace easy_algorithm {
 
 template <class Item>
-class ArrayIterator : public Iterator<Item> {
+class ArrayIterator : public Iterator<Item> {                               // Класс - итератор для массивов
 public:
   ArrayIterator(const Iterator<Item>& iter);                                // Конструктор копирования. Создает итератор идентичный iter
-  ArrayIterator(Item* item);
-  virtual ~ArrayIterator() {}                                               // Виртуальный деструктор позволяет полиморфное удаление объектов
-  ArrayIterator() : Iterator<Item>() {} /******/
+  ArrayIterator(Item* item);                                                // Конструктор с параметром, на какой элемент указывать
+  virtual ~ArrayIterator();                                                 // Виртуальный деструктор позволяет полиморфное удаление объектов
+  ArrayIterator();                                                          // Конструктор по умолчанию
+
 private:
-  virtual std::ostream& vPrint(std::ostream& os, Iterator<Item>& iter);         // Вывод значения элемента в поток
+  virtual std::ostream& vPrint(std::ostream& os, Iterator<Item>& iter);               // Вывод значения элемента в поток
   virtual const std::istream& vInput(const std::istream& is, Iterator<Item>& ds);     // Ввод значения элемента из потока
 
-  //virtual Iterator& vClone() = 0;                               // Возвращает ссылку на копию итератора (для конструктора копирования)
-
-  virtual Iterator<Item>& vIncrease();                            // Соответствует operator ++
-  virtual Iterator<Item>& vDecrease();                            // Соответствует operator --
-  virtual const Iterator<Item>& vSeekIter(ptrdiff_t diff);        // Соответствует operator +=, operator -=
-  virtual const Iterator<Item>& vAssign(const Iterator<Item>& iter);    // Соответствует =
-  virtual Iterator<Item>& vInsert(const Item& item);              // Виртуальные функции соответствуют
-  virtual void vSwap(Iterator<Item>& iter);                       // функциям интерфейса класса (без приставки v)
-//  virtual Iterator<Item>& vReplace(Iterator& iter);             // Обеспечивают полиморфное поведение объектов
-//  virtual Iterator<Item>& vRemove();
-  virtual ptrdiff_t vDiff(const Iterator<Item>& iter);            // Соответствует operator -
+  virtual Iterator<Item>& vIncrease();                                  // Соответствует operator ++
+  virtual Iterator<Item>& vDecrease();                                  // Соответствует operator --
+  virtual const Iterator<Item>& vSeekIter(ptrdiff_t diff);              // Соответствует operator +=, operator -=
+  virtual const Iterator<Item>& vAssign(const Iterator<Item>& iter);    // Соответствует = iter
+  virtual Iterator<Item>& vInsert(const Item& item);                    // Соответствует = item
+  virtual void vSwap(Iterator<Item>& iter);                             // Соответствует swap
+  virtual ptrdiff_t vDiff(const Iterator<Item>& iter);                  // Соответствует operator -
 
 protected:
-  using Iterator<Item>::_pItem;
-
+  using Iterator<Item>::_pItem;                                         // Указатель на элемент, на который ссылается итератор
 };
+
+template <class Item>
+ArrayIterator<Item>::ArrayIterator() : Iterator<Item>() {}
+
+template <class Item>
+ArrayIterator<Item>::~ArrayIterator() {}
 
 template <class Item>
 ArrayIterator<Item>::ArrayIterator(Item* item) : Iterator<Item>() {
   _pItem = item;
 }
+
+template <class Item>
+ArrayIterator<Item>::ArrayIterator(const Iterator<Item>& iter) : Iterator<Item>(iter) {}
 
 template <class Item>
 std::ostream& ArrayIterator<Item>::vPrint(std::ostream& os, Iterator<Item>& iter) {

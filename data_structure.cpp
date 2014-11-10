@@ -3,7 +3,7 @@
 
 namespace easy_algorithm {
 
-const char* LengthError = "Unable to insert a new itement!";
+const char* LengthError = "Unable to insert a new itement!";    // Сообщения при генерировании исключений
 const char* IndexError = "Index is out of range!";
 
 void DataStructure::checkIndex(size_t index) {

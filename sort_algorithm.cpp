@@ -6,19 +6,12 @@ void SortAlgorithm::sort(DataStructure* pDS, TimeObserver* pTO) {
   vSort(pDS, pTO);
 }
 
-/*void SortAlgorithm::notifyTO(clock_t ms, TimeObserver* pTO) {
-  pTO->update(ms);
-}*/
-
 void SelectionSort::vSort(DataStructure* pDS, TimeObserver* pTO) {
   size_t s = pDS->Size();
-
-  //notifyTO(12, pTO);
   {
-    Timer t(pTO, 0);
+    Timer t(pTO, 0);  // Запуск счетчика (0 тип)
 
-
-    for (size_t i = 0; i < s - 1; ++i) {
+    for (size_t i = 0; i < s - 1; ++i) {                // Алгоритм сортировки выбором
       //pDS->setCur2(i);
       size_t min = i;
       for (size_t j = i; j < s; ++j) {
@@ -30,7 +23,8 @@ void SelectionSort::vSort(DataStructure* pDS, TimeObserver* pTO) {
       pDS->setCur1(i);
       pDS->setCur2(min);
       pDS->swap();// exch(a[i], a[min]);
-    }
+
+    }                 // Остановка счетчика, передача значения классу TimeObserver
   }
 }
 
