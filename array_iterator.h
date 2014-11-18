@@ -2,6 +2,7 @@
 #define EASY_ALGORITHM_ARRAY_ITERATOR_H
 
 #include <iosfwd>
+#include<iostream>
 #include "iterator.h"
 
 namespace easy_algorithm {
@@ -15,8 +16,8 @@ public:
   ArrayIterator();                                                          // Конструктор по умолчанию
 
 private:
-  virtual std::ostream& vPrint(std::ostream& os, Iterator<Item>& iter);               // Вывод значения элемента в поток
-  virtual const std::istream& vInput(const std::istream& is, Iterator<Item>& ds);     // Ввод значения элемента из потока
+  virtual std::ostream& vPrint(std::ostream& os, const Iterator<Item>& iter) const;               // Вывод значения элемента в поток
+  virtual std::istream& vInput(std::istream& is, Iterator<Item>& ds);     // Ввод значения элемента из потока
 
   virtual Iterator<Item>& vIncrease();                                  // Соответствует operator ++
   virtual Iterator<Item>& vDecrease();                                  // Соответствует operator --
@@ -45,13 +46,18 @@ template <class Item>
 ArrayIterator<Item>::ArrayIterator(const Iterator<Item>& iter) : Iterator<Item>(iter) {}
 
 template <class Item>
-std::ostream& ArrayIterator<Item>::vPrint(std::ostream& os, Iterator<Item>& iter) {
-  return os; // Заглушка
+std::ostream& ArrayIterator<Item>::vPrint(std::ostream& os, const Iterator<Item>& iter) const {
+  os << *iter;                                                          // Вывод элемента, на который указывает итератор
+  return os;
 }
 
 template <class Item>
-const std::istream& ArrayIterator<Item>::vInput(const std::istream& is, Iterator<Item>& iter) {
-  return is; // Заглушка
+std::istream& ArrayIterator<Item>::vInput(std::istream& is, Iterator<Item>& iter) {
+  Item temp;
+  is >> temp;
+  if(!(is.rdstate() & std::ios::failbit))
+    iter = temp;                                                        // Присваивание элементу, на который указывает итератор, значения из входного потока
+  return is;
 }
 
 template <class Item>
@@ -86,7 +92,9 @@ Iterator<Item>& ArrayIterator<Item>::vInsert(const Item& item) {
 
 template <class Item>
 void ArrayIterator<Item>::vSwap(Iterator<Item>& iter) {
-  std::swap(*_pItem, *(iter.getPointer()));
+  Item* temp = _pItem;
+  _pItem = iter.getPointer();
+  iter.setPointer(temp);
 }
 
 template <class Item>

@@ -6,65 +6,191 @@
 #include "sort.h"
 #include "array_iterator.h"
 #include "vector_adapter.h"
+#include "list.h"
+#include "list_iterator.h"
 
 int main() {
   using namespace std;
   using namespace easy_algorithm;
 
-  DataStructure* pA = DataStructure::createArray<int>(100);
+  ListIterator<int> lll;
+
+/*  srand((unsigned)time(NULL));
+
+  // Создание массива
+  DataStructure* pA = DataStructure::createArray<int>(10);
   Array<int>* pa = dynamic_cast<Array<int>*>(pA);
 
-  srand((unsigned)time(NULL));
-
-  for(size_t i = 0; i < 100; ++i)
+  // Вставки 6 произвольных элементов в массив
+  for(size_t i = 0; i < 6; ++i)
     pa->insert(rand());
 
+  // Создаем копию текущего массива
+  DataStructure* pA2 = DataStructure::createArray<int>(*pA);
+  // Вывод копии массива
+  cout << "Array copy:" << endl << *pA;
+
+  cout << "Insert 3 elements (type 3 integers) at the end of the array:" << endl;
+  // Ввод еще 3 элементов из потока ввода
+  for(int i = 0; i < 3; ++i)
+    cin >> *pA;
+
+  // Вставка элемента в 4-ю позицию
+  cout << "Insert 1 element at 4th position (type 1 integer):" << endl;
+  {
+    int temp;
+    cin >> temp;
+    pa->insert(temp, 4);
+  }
+
+  // Создание итераторов
+  ArrayIterator<int> iter(pa->begin());
+  ArrayIterator<int> iter2(pa->end());
+  cout << "Enter integer value for the first element:" << endl;
+  // Значение, вводимое с клавиатуры, присваивается элементу, на который указывает итератор (первый элемент)
+  cin >> iter;
+  // Смещаем итераторы
+  ++iter;
+  --iter2;
+  cout << "The second element is " << iter << endl;
+  cout << "The third element is " << (*pa)[2] << endl;
+  cout << "The last element is " << iter2 << endl;
+  // Вывод всего массива
+  cout << "The whole array:" << endl << *pA;
+  cout << "Size: " << pA->Size() << endl << "Maximal size: " << pA->maxSize() << endl;
+
+  // Обмен первого и последнего элементов массива
+  cout << "Swap the first and the last element" << endl;
+  pA->swap(0,9);
+  // Перемещение 3-го элемента на 8-ю позицию
+  cout << "Replace the third element to the 8th position" << endl;
+  pA->replace(2,7);
+  // Удаление 6-го элемента
+  cout << "Remove the 6th element" << endl;
+  pA->remove(5);
+  cout << "The array is empty: " << boolalpha << pA->empty() << endl;
+  cout << "The 3rd element is less than the 5th element: " << boolalpha << pA->compare(2, 4) << endl;
+  cout << "The whole array:" << endl << *pA;
+
+  // Второй массив становится идентичным первому
+  *pA2 = *pA;
+  cout << "The whole 2nd array after copy:" << endl << *pA;
+
+  // Сортировка массива
+  // Создание объекта, реализующего метод сортировки выбором
   SelectionSort* ss = new SelectionSort;
+  // Объект, подсчитывающий время выполнения операций
   TimeObserver* to = new TimeObserver;
 
-//  for (size_t i = 0; i < pa->Size(); ++i)
-//    cout<<(*pa)[i]<<" ";
-//  cout << endl;
-
-  Sort s(pA,ss,to);
+  // Объект-фасад
+  Sort s(pA, ss, to);
+  // Выполнение сортировки
   s.sort();
 
-  //cin.get();
-
-  //for (size_t i = 0; i < pa->Size(); ++i)
-  //  cout << (*pa)[i] << " ";
-
-  //cin.get();
-
-  ArrayIterator<int> ib = (pa->begin());
-  ArrayIterator<int> ie = (pa->end());
+  iter = pa->begin();
+  iter2 = pa->end();
   int cnt = 0;
+  cout << "Sorted array:" << endl;
+  // Вывод массива с помощью итераторов
+  for (ArrayIterator<int> i = iter; i != iter2; ++i, ++cnt) {
+    cout << cnt << " " << i << endl;
+  }
+  cout << "Total comparison time (ms): " << s.getComparisonTime() << endl;
+  cout << "Total assignment time (ms): " << s.getAssignmentTime() << endl;
+  cout << "Total search time (ms): " << s.getSearchTime() << endl;
+  cout << "Comparison, assignment and search time (ms): " <<  s.getComparisonTime() + s.getAssignmentTime() + s.getSearchTime() << endl;
+  cout << "Total time (ms): " << s.getTotalTime() << endl;
+
+  // Создание вектора с элементами {5,4,3,2,1}
+  vector<int> intVec(5);
+  cout << "Creation of vector:" << endl;
+  for (int i = 0; i < 5; ++i) {
+    intVec[i] = 5 - i;
+    cout << intVec[i] << endl;
+  }
+
+  // Создание адаптера для вектора
+  DataStructure* pVA = DataStructure::createVectorAdapter<int>(intVec);
+  s.resetTimeObserver();
+  s.setDataStructure(pVA);
+  // Сортировка вектора
+  s.sort();
+
+  VectorAdapter<int>* pva = dynamic_cast<VectorAdapter<int>*>(pVA);
+  ArrayIterator<int> ib = (pva->begin());
+  ArrayIterator<int> ie = (pva->end());
+  cnt = 0;
+  cout << "Sorted vector:" << endl;
   for (ArrayIterator<int> i = ib; i != ie; ++i, ++cnt) {
     cout << cnt << " " << (*i) << endl;
   }
-  //Iterator<int>* ai = new ArrayIterator<int>;
-  //cin>>(*ai);
+  cout << "Total comparison time (ms): " << s.getComparisonTime() << endl;
+  cout << "Total assignment time (ms): " << s.getAssignmentTime() << endl;
+  cout << "Total search time (ms): " << s.getSearchTime() << endl;
+  cout << "Comparison, assignment and search time (ms): " <<  s.getComparisonTime() + s.getAssignmentTime() + s.getSearchTime() << endl;
+  cout << "Total time (ms): " << s.getTotalTime() << endl;
 
-  vector<int> vv(5);
-  for (int i = 0; i < 5; ++i)
-    vv[i] = 5 - i;
+  // Создание структуры данных из 1000 элементов
+  DataStructure* pA3 = DataStructure::createArray<int>(1000);
+  Array<int>* pa3 = dynamic_cast<Array<int>*>(pA3);
 
-  DataStructure* pVA = DataStructure::createVectorAdapter<int>(vv);
-  Sort s2(pVA, ss, to);
-  s2.sort();
-  //(dynamic_cast<VectorAdapter<int>*>(pVA))->insert(1);
+  // Вставки 1000 произвольных элементов в массив
+  for(size_t i = 0; i < 1000; ++i)
+    pa3->insert(rand());
 
-  VectorAdapter<int>* pva = dynamic_cast<VectorAdapter<int>*>(pVA);
-  ArrayIterator<int> ib2 = (pva->begin());
-  ArrayIterator<int> ie2 = (pva->end());
-  cnt = 0;
-  for (ArrayIterator<int> i = ib2; i != ie2; ++i, ++cnt) {
-    cout << cnt << " " << (*i) << endl;
-  }
+  s.resetTimeObserver();
+  s.setDataStructure(pA3);
+  s.sort();
+  cout << endl << "Sorting array of 1000 elements" << endl;
+  cout << "Total comparison time (ms): " << s.getComparisonTime() << endl;
+  cout << "Total assignment time (ms): " << s.getAssignmentTime() << endl;
+  cout << "Total search time (ms): " << s.getSearchTime() << endl;
+  cout << "Comparison, assignment and search time (ms): " <<  s.getComparisonTime() + s.getAssignmentTime() + s.getSearchTime() << endl;
+  cout << "Total time (ms): " << s.getTotalTime() << endl;
   
   cin.get();
+  cin.get();
 
-  //ai->operator++();
+  delete ss;
+  delete to;
+  delete pA;
+  delete pA2;
+  delete pA3;
+  delete pVA;*/
+
+  // Создание массива
+  DataStructure* pL = DataStructure::createList<int>(10);
+  List<int>* pl = dynamic_cast<List<int>*>(pL);
+
+  //(*pl)[0]->item=(*pl)[1]->item;
+  pl->insert(1);
+  pl->insert(2);
+  pl->insert(3);
+  pl->insert(4,2);
+  pL->swap(2,3);
+  cout << pL->compare(2,3) << " " << (*pl)[2]->next->item << " " << (*pl)[3]->next->item << endl;
+  //pL->swap(2,3);
+  pL->replace(1,3);
+  pL->remove(2);
+  cout << *pL << endl;
+  cin >> *pL;
+  cout << endl << *pL;
+
+  DataStructure* pL2 = DataStructure::createList<int>(10);
+
+  *pL2 = *pL;
+  cout << endl << *pL2;
+
+  ListIterator<int> lib = (pl->begin());
+  ListIterator<int> lie = (pl->end());
+  int cnt = 0;
+  //++lib;
+  for (ListIterator<int> i = lib; i != lie; ++i, ++cnt) {
+    cout << cnt << " " << (*i) << endl;
+  }
+
+  delete pL;
+  delete pL2;
 
   return 0;
 }

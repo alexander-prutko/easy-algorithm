@@ -11,12 +11,10 @@ template <class Item>
 class Iterator {                                                // Базовый класс итераторов
 public:
   template <class Elem>
-  friend std::ostream& operator << (std::ostream& os, Iterator<Elem>& iter);              // Вывод значения элемента в поток
+  friend std::ostream& operator << (std::ostream& os, const Iterator<Elem>& iter);              // Вывод значения элемента в поток
   template <class Elem>
-  friend const std::istream& operator >> (const std::istream& is, Iterator<Elem>& iter);  // Ввод значения элемента из потока
+  friend std::istream& operator >> (std::istream& is, Iterator<Elem>& iter);  // Ввод значения элемента из потока
 
-  Iterator();                                                   // Конструктор по умолчанию
-  Iterator(const Iterator& iter);                               // Конструктор копирования. Создает итератор идентичный iter
   virtual ~Iterator();                                          // Виртуальный деструктор позволяет полиморфное удаление объектов
 
   Iterator& operator ++ ();                                     // Префиксный инкремент итератора
@@ -31,14 +29,19 @@ public:
   Item& operator * () const;                                    // Разыменование итератора
   Item* operator -> () const;                                   // Выбор члена элемента _pItem
   Item* getPointer() const;                                     // Возвращает указатель на элемент (_pItem)
+  void setPointer(Item* p);
   bool operator < (const Iterator& iter) const;                 // Сравнение значений, на которые указывают 2 итератора
   void checkPointer() const;                                    // Проверить указатель _pItem (может генерировать исключение)
   bool operator == (const Iterator& iter) const;                // Возвращает true, если итераторы ссылаются на один и тот же элемент
   bool operator != (const Iterator& iter) const;                // Возвращает true, если итераторы не ссылаются на один и тот же элемент
 
+protected:
+  Iterator();                                                   // Конструктор по умолчанию
+  Iterator(const Iterator& iter);                               // Конструктор копирования. Создает итератор идентичный iter
+
 private:
-  virtual std::ostream& vPrint(std::ostream& os, Iterator& iter) = 0;               // Вывод значения элемента в поток
-  virtual const std::istream& vInput(const std::istream& is, Iterator& ds) = 0;     // Ввод значения элемента из потока
+  virtual std::ostream& vPrint(std::ostream& os, const Iterator& iter) const = 0;               // Вывод значения элемента в поток
+  virtual std::istream& vInput(std::istream& is, Iterator& ds) = 0;     // Ввод значения элемента из потока
 
   virtual Iterator& vIncrease() = 0;                            // Соответствует operator ++
   virtual Iterator& vDecrease() = 0;                            // Соответствует operator --
@@ -53,13 +56,13 @@ protected:
 };
 
 template <class Item>
-std::ostream& operator << (std::ostream& os, Iterator<Item>& iter) {
+std::ostream& operator << (std::ostream& os, const Iterator<Item>& iter) {
   iter.checkPointer();
   return iter.vPrint(os, iter);
 }
 
 template <class Item>
-const std::istream& operator >> (const std::istream& is, Iterator<Item>& iter) {
+std::istream& operator >> (std::istream& is, Iterator<Item>& iter) {
   iter.checkPointer();
   return iter.vInput(is, iter);
 }
@@ -105,6 +108,11 @@ Item* Iterator<Item>::operator -> () const {
 template <class Item>
 Item* Iterator<Item>::getPointer() const {
   return _pItem;
+}
+
+template <class Item>
+void Iterator<Item>::setPointer(Item* p) {
+  _pItem = p;
 }
 
 template <class Item>

@@ -11,6 +11,15 @@ class Sort {              // Класс-интерфейс для сортиро
 public:
   Sort(DataStructure* ds, SortAlgorithm* sa, TimeObserver* to);
   void sort();            // Выполнить сортировку структуры данных ds с помощью алгоритма sa. to будет собирать сведения о времени процесса сортировки
+  void setTimeObserver(TimeObserver* pTO);
+  void setDataStructure(DataStructure* pDS);
+  void setSortAlgorithm(SortAlgorithm* pSA);
+  void resetTimeObserver();
+
+  double getComparisonTime();   // Получение времен выполнения операций
+  double getAssignmentTime();
+  double getTotalTime();
+  double getSearchTime();
 
 private:
   DataStructure* _pDS;

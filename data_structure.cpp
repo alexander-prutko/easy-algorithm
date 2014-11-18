@@ -6,13 +6,13 @@ namespace easy_algorithm {
 const char* LengthError = "Unable to insert a new itement!";    // Сообщения при генерировании исключений
 const char* IndexError = "Index is out of range!";
 
-void DataStructure::checkIndex(size_t index) {
+void DataStructure::checkIndex(size_t index) const {
   if((index >= _size || index < 0))
     throw std::out_of_range(IndexError);
 }
 
 DataStructure::DataStructure(size_t maxSize)
-  : _size(0), _maxSize(maxSize), _cur1(0), _cur2(0) {}
+  : _size(0), _maxSize(maxSize), _cur1(0), _cur2(0) {}///////////// _size(0)
 
 DataStructure::DataStructure(const DataStructure& ds)
   : _size(ds.Size()), _maxSize(ds.maxSize()), _cur1(0), _cur2(0) {
@@ -44,7 +44,7 @@ std::ostream& operator << (std::ostream& os, const DataStructure& ds) {
   return ds.vPrint(os, ds);
 }
 
-const std::istream& operator >> (const std::istream& is, DataStructure& ds) {
+std::istream& operator >> (std::istream& is, DataStructure& ds) {
   return ds.vInput(is, ds);
 }
 
@@ -92,23 +92,23 @@ bool DataStructure::compare(size_t index1, size_t index2) {
   return vCompare();
 }
 
-void DataStructure::setCur1(size_t index) {
+void DataStructure::setCur1(size_t index) const {
   checkIndex(index);
-  _cur1 = index;
   vSetCur1(index);
+  _cur1 = index;
 }
 
-void DataStructure::setCur2(size_t index) {
+void DataStructure::setCur2(size_t index) const {
   checkIndex(index);
-  _cur2 = index;
   vSetCur2(index);
+  _cur2 = index;
 }
 
-size_t DataStructure::getCur1() {
+size_t DataStructure::getCur1() const {
   return _cur1;
 }
 
-size_t DataStructure::getCur2() {
+size_t DataStructure::getCur2() const {
   return _cur2;
 }
 

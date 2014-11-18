@@ -3,6 +3,7 @@
 
 #include <iosfwd>
 #include <stdexcept>
+#include <iostream>
 #include "data_structure.h"
 
 namespace easy_algorithm {
@@ -26,22 +27,22 @@ public:
   ArrayIterator<Item> end() const;                // Возвращает итератор на конец массива (итератор указывает на элемент за последним элемента массива)
 
 protected:
-  Item* getPointer() const;                       // Возвращает указатель на массив (_pArray)
-  void setPointer(Item*);                         // Устанавливает указатель на массив (_pArray)
+  Item* getPointer() const;                       // Возвращает указатель на массив (pArray)
+  void setPointer(Item*);                         // Устанавливает указатель на массив (pArray)
   Array(size_t maxSize);                          // Конструкторы закрытые, объекты класса Array создаются
   Array(const DataStructure& array);              // с помощью производящих функций класса DataStructure
   
 private:
   std::ostream& vPrint(std::ostream& os, const DataStructure& ds) const;    // Вывод структуры данных в поток
-  const std::istream& vInput(const std::istream& is, DataStructure& ds);    // Ввод структуры данных из потока
+  std::istream& vInput(std::istream& is, DataStructure& ds);    // Ввод структуры данных из потока
 
   void vSwap(DataStructure& ds);                            // Переопределение чисто виртуальных функций DataStructure
   const DataStructure& vAssign(const DataStructure& ds);
   void vSwap();
   void vReplace();
   void vRemove();
-  void vSetCur1(size_t index);
-  void vSetCur2(size_t index);
+  void vSetCur1(size_t index) const;
+  void vSetCur2(size_t index) const;
   bool vCompare();
 
   Item* pArray;                                   // Указатель на массив
@@ -76,12 +77,22 @@ Array<Item>::Array(const DataStructure& array) : DataStructure(array) {
 
 template <class Item>
 std::ostream& Array<Item>::vPrint(std::ostream& os, const DataStructure& ds) const {
-  return os; // Заглушка
+  const Array<Item>* pA = (dynamic_cast<const Array<Item>*>(&ds));        // Преобразование к Array<Item>*, т.к. vPrint вызовется точно для Array
+  for(size_t i = 0; i < ds.Size(); ++i)
+    os << pA->operator [](i) << std::endl;                                // Вывод i-того элемента
+  return os;
 }
 
 template <class Item>
-const std::istream& Array<Item>::vInput(const std::istream& is, DataStructure& ds) {
-  return is; // Заглушка
+std::istream& Array<Item>::vInput(std::istream& is, DataStructure& ds) {
+  Array<Item>* pA = (dynamic_cast<Array<Item>*>(&ds));                    // Преобразование к Array<Item>*, т.к. vInput вызовется точно для Array
+  Item temp;
+  if(ds.Size() < ds.maxSize()) {                                          // Если структура данных заполнена, вводимое значение игнорируется
+    is >> temp;
+    if(!(is.rdstate() & std::ios::failbit))
+      pA->insert(temp);                                                   // Вставка элемента в конец структуры данных
+  }
+  return is;
 }
 
 template <class Item>
@@ -89,7 +100,7 @@ void Array<Item>::insert(Item item) {
   size_t size = Size();
   if(size == maxSize())
     throw std::length_error("Unable to insert a new itement!");
-  insert(item, Size());                                                     // Вставка в конец массива
+  insert(item, size);                                                     // Вставка в конец массива
 }
 
 template <class Item>
@@ -171,12 +182,12 @@ Array<Item>::~Array() {
 }
 
 template <class Item>
-void Array<Item>::vSetCur1(size_t index) {
+void Array<Item>::vSetCur1(size_t index) const {
   _pCur1 = &pArray[index];
 }
 
 template <class Item>
-void Array<Item>::vSetCur2(size_t index) {
+void Array<Item>::vSetCur2(size_t index) const {
   _pCur2 = &pArray[index];
 }
 

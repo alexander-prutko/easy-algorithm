@@ -10,16 +10,27 @@ namespace easy_algorithm {
 class TimeObserver {                // Класс принимает время выполнения операции и увеличивает счетчик
 public:
   TimeObserver() { reset(); }
-  void update1(double ms) { t1 += ms; ++n1; }
-  void update2(double ms) { t2 += ms; ++n2; }
-  void update3(double ms) { t3 += ms; ++n3; }
+  void updateComparisonTime(double ms)  {
+    t1 += ms; ++n1; }   // Обновление времен выполнения операций
+  void updateAssignmentTime(double ms)  {
+    t2 += ms; ++n2; }
+  void updateTotalTime(double ms)       {
+    t3 += ms; ++n3; }
+  void updateSearchTime(double ms)      {
+    t4 += ms; ++n4; }
+
+  double getComparisonTime()  { return t1; }    // Получение времен выполнения операций
+  double getAssignmentTime()  { return t2; }
+  double getTotalTime()       { return t3; }
+  double getSearchTime()      { return t4; }
+  
   void reset(){
-    t1 = t2 = t3 = n1 = n2 = n3 = 0;
+    t1 = t2 = t3 = t4 = n1 = n2 = n3 = n4 = 0;
   }
 
 private:
-  double t1, t2, t3;
-  unsigned int n1, n2, n3;
+  double t1, t2, t3, t4;
+  unsigned int n1, n2, n3, n4;
 };
 
 class SortAlgorithm {                                             // Базовый класс алгоритмов сортировки
@@ -35,13 +46,16 @@ protected:
       QueryPerformanceFrequency((LARGE_INTEGER*)&freq);
       switch (type) {
         case 0:
-          _pTO->update1((t2 - t1) / freq);
+          _pTO->updateComparisonTime((t2 - t1) / freq);
           break;
         case 1:
-          _pTO->update2((t2 - t1) / freq);
+          _pTO->updateAssignmentTime((t2 - t1) / freq);
           break;
         case 2:
-          _pTO->update3((t2 - t1) / freq);
+          _pTO->updateTotalTime((t2 - t1) / freq);
+          break;
+      case 3:
+          _pTO->updateSearchTime((t2 - t1) / freq);
           break;
         default:;
       }
