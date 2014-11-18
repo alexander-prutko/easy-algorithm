@@ -46,7 +46,7 @@ private:
   bool vCompare();
 
   Item* pArray;                                   // Указатель на массив
-  Item *_pCur1, *_pCur2;                          // Указатели на элементы массива, на которые указывают курсоры _cur1 и _cur2
+  mutable Item *_pCur1, *_pCur2;                          // Указатели на элементы массива, на которые указывают курсоры _cur1 и _cur2
 };
 
 template <class Item>

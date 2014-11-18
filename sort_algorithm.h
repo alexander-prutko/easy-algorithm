@@ -36,6 +36,7 @@ private:
 class SortAlgorithm {                                             // Базовый класс алгоритмов сортировки
 public:
   void sort(DataStructure* pDS, TimeObserver* pTO);
+  virtual ~SortAlgorithm() {}
 
 protected:
   class Timer {                                                   // Вложенный класс для подсчета времени выполнения операций
@@ -73,6 +74,7 @@ private:
 
 class SelectionSort : public SortAlgorithm {                      // Класс, реализующий сортировку выбором
 public:
+  virtual ~SelectionSort() {}
 
 private:
   void vSort(DataStructure* pDS, TimeObserver* pTO);
