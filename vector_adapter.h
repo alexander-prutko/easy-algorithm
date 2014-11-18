@@ -19,6 +19,7 @@ public:
   
 protected:
   VectorAdapter(std::vector<Item>& array);                                  // В качестве параметра конструктора - существующий vector
+  using Array<Item>::setMaxSize;
   using Array<Item>::setSize;
   using Array<Item>::setCur1;
   using Array<Item>::setCur2;

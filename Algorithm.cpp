@@ -15,7 +15,7 @@ int main() {
 
   ListIterator<int> lll;
 
-/*  srand((unsigned)time(NULL));
+  srand((unsigned)time(NULL));
 
   // Создание массива
   DataStructure* pA = DataStructure::createArray<int>(10);
@@ -156,7 +156,7 @@ int main() {
   delete pA;
   delete pA2;
   delete pA3;
-  delete pVA;*/
+  delete pVA;
 
   // Создание массива
   DataStructure* pL = DataStructure::createList<int>(10);
@@ -183,7 +183,7 @@ int main() {
 
   ListIterator<int> lib = (pl->begin());
   ListIterator<int> lie = (pl->end());
-  int cnt = 0;
+  cnt = 0;
   //++lib;
   for (ListIterator<int> i = lib; i != lie; ++i, ++cnt) {
     cout << cnt << " " << (*i) << endl;
