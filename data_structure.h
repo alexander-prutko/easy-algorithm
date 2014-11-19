@@ -11,6 +11,8 @@ class Array;
 template <class Item>
 class List;
 template <class Item>
+class DLList;
+template <class Item>
 class VectorAdapter;
 
 class DataStructure {     // Базовый класс структур данных
@@ -26,6 +28,10 @@ public:
   static DataStructure* createList(size_t maxSize);                         // Производящая функция List(size_t)
   template <class Item>
   static DataStructure* createList(const DataStructure& list);              // Производящая функция List(const DataStructure&)
+  template <class Item>
+  static DataStructure* createDLList(size_t maxSize);                         // Производящая функция List(size_t)
+  template <class Item>
+  static DataStructure* createDLList(const DataStructure& dllist);              // Производящая функция List(const DataStructure&)
   template <class Item>
   static DataStructure* createVectorAdapter(std::vector<Item>& array);      // Производящая функция VectorAdapter(std::vector<Item>&)
   
@@ -97,6 +103,16 @@ DataStructure* DataStructure::createList(size_t maxSize) {   // Производ
 template <class Item>
 DataStructure* DataStructure::createList(const DataStructure& list) {   // Производящая функция List(const DataStructure&)
   return new List<Item>(list);                                          // Возвращается указатель DataStructure* на объект List<Item>
+}
+
+template <class Item>
+DataStructure* DataStructure::createDLList(size_t maxSize) {   // Производящая функция List(size_t)
+  return new DLList<Item>(maxSize);                            // Возвращается указатель DataStructure* на объект List<Item>
+}
+
+template <class Item>
+DataStructure* DataStructure::createDLList(const DataStructure& dllist) {   // Производящая функция List(const DataStructure&)
+  return new DLList<Item>(dllist);                                          // Возвращается указатель DataStructure* на объект List<Item>
 }
 
 template <class Item>

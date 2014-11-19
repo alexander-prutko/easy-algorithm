@@ -290,9 +290,25 @@ bool List<Item>::vCompare() { //готово
 }
 
 template <class Item>
-void List<Item>::vSwap() { //готово
-  std::swap(_pCur1->next, _pCur2->next);
-  std::swap(_pCur1->next->next, _pCur2->next->next);
+void List<Item>::vSwap() { //заглушка
+  size_t c1 = getCur1();
+  size_t c2 = getCur2();
+  if (c1 == c2 - 1) {
+    link temp = _pCur2->next->next;
+    _pCur2->next->next = _pCur1->next;
+    _pCur1->next = _pCur2->next;
+    _pCur2->next = temp;
+  }
+  else if (c2 == c1 - 1) {
+    link temp = _pCur1->next->next;
+    _pCur1->next->next = _pCur2->next;
+    _pCur2->next = _pCur1->next;
+    _pCur1->next = temp;
+  }
+  else {
+    std::swap(_pCur1->next, _pCur2->next);
+    std::swap(_pCur1->next->next, _pCur2->next->next);
+  }
   setCur1(0);
   setCur2(0);
 }

@@ -8,12 +8,14 @@
 #include "vector_adapter.h"
 #include "list.h"
 #include "list_iterator.h"
+#include "dllist.h"
+#include "dllist_iterator.h"
 
 int main() {
   using namespace std;
   using namespace easy_algorithm;
 
-  ListIterator<int> lll;
+ /* ListIterator<int> lll;
 
   srand((unsigned)time(NULL));
 
@@ -156,20 +158,20 @@ int main() {
   delete pA;
   delete pA2;
   delete pA3;
-  delete pVA;
-
+  delete pVA;*/
+/*
   // Создание массива
   DataStructure* pL = DataStructure::createList<int>(10);
   List<int>* pl = dynamic_cast<List<int>*>(pL);
 
   //(*pl)[0]->item=(*pl)[1]->item;
-  pl->insert(1);
-  pl->insert(2);
-  pl->insert(3);
-  pl->insert(4,2);
+  pl->insert(51);
+  pl->insert(42);
+  pl->insert(33);
+  pl->insert(24,2);
   pL->swap(2,3);
   cout << pL->compare(2,3) << " " << (*pl)[2]->next->item << " " << (*pl)[3]->next->item << endl;
-  //pL->swap(2,3);
+  pL->swap(3,0);
   pL->replace(1,3);
   pL->remove(2);
   cout << *pL << endl;
@@ -181,16 +183,54 @@ int main() {
   *pL2 = *pL;
   cout << endl << *pL2;
 
+  int cnt = 0;
+  //++lib;
+  // Сортировка массива
+  // Создание объекта, реализующего метод сортировки выбором
+  SelectionSort* ss = new SelectionSort;
+  // Объект, подсчитывающий время выполнения операций
+  TimeObserver* to = new TimeObserver;
+
+  // Объект-фасад
+  Sort s(pL, ss, to);
+  // Выполнение сортировки
+  s.sort();
   ListIterator<int> lib = (pl->begin());
   ListIterator<int> lie = (pl->end());
-  cnt = 0;
-  //++lib;
   for (ListIterator<int> i = lib; i != lie; ++i, ++cnt) {
     cout << cnt << " " << (*i) << endl;
   }
 
   delete pL;
-  delete pL2;
+  delete pL2;*/
+
+  DataStructure* pDL = DataStructure::createDLList<int>(10);
+  DLList<int>* pdl = dynamic_cast<DLList<int>*>(pDL);
+
+  //(*pl)[0]->item=(*pl)[1]->item;
+  pdl->insert(51);
+  pdl->insert(42);
+  pdl->insert(33);
+  pdl->insert(24, 2);
+  pDL->swap(2, 3);
+  pDL->swap(3, 0);
+  pDL->replace(3, 1);
+  //pDL->remove(2);
+  cout << pDL->compare(2, 3) << " " << (*pdl)[2]->next->item << " " << (*pdl)[3]->next->item << endl;
+  //pL->swap(2,3);
+  pDL->replace(1, 3);
+  pDL->remove(2);
+  cout << *pDL << endl;
+  cin >> *pDL;
+  cout << endl << *pDL;
+
+  int cnt = 0;
+
+  DLListIterator<int> dlib = --(pdl->begin());
+  DLListIterator<int> dlie = (pdl->end());
+  for (Iterator<int>* i = &(--dlie); *i != dlib; --(*i), ++cnt) {
+    cout << cnt << " " << (*i) << endl;
+  }
 
   return 0;
 }

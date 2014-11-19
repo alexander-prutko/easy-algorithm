@@ -48,7 +48,7 @@ ListIterator<Item>::ListIterator(link item) : Iterator<Item>(), _pNode(item) {
 }
 
 template <class Item>
-ListIterator<Item>::ListIterator(const Iterator<Item>& iter) : Iterator<Item>(iter), _pNode(iter.getNode()) {}
+ListIterator<Item>::ListIterator(const Iterator<Item>& iter) : Iterator<Item>(iter), _pNode(dynamic_cast<const ListIterator<Item>*>(&iter)->getNode()) {}
 
 template <class Item>
 std::ostream& ListIterator<Item>::vPrint(std::ostream& os, const Iterator<Item>& iter) const {
