@@ -80,6 +80,30 @@ private:
   void vSort(DataStructure* pDS, TimeObserver* pTO);
 };
 
+class InsertionSort : public SortAlgorithm {                      // Класс, реализующий сортировку вставками
+public:
+  virtual ~InsertionSort() {}
+
+private:
+  void vSort(DataStructure* pDS, TimeObserver* pTO);
+};
+
+class BubbleSort : public SortAlgorithm {                      // Класс, реализующий сортировку пузырьком
+public:
+  virtual ~BubbleSort() {}
+
+private:
+  void vSort(DataStructure* pDS, TimeObserver* pTO);
+};
+
+class ShellSort : public SortAlgorithm {                      // Класс, реализующий сортировку Шелла
+public:
+  virtual ~ShellSort() {}
+
+private:
+  void vSort(DataStructure* pDS, TimeObserver* pTO);
+};
+
 }
 
 #endif

@@ -15,7 +15,7 @@ int main() {
   using namespace std;
   using namespace easy_algorithm;
 
- /* ListIterator<int> lll;
+  ListIterator<int> lll;
 
   srand((unsigned)time(NULL));
 
@@ -80,7 +80,7 @@ int main() {
 
   // Сортировка массива
   // Создание объекта, реализующего метод сортировки выбором
-  SelectionSort* ss = new SelectionSort;
+  SortAlgorithm* ss = new ShellSort/*BubbleSort*//*InsertionSort*//*SelectionSort*/;
   // Объект, подсчитывающий время выполнения операций
   TimeObserver* to = new TimeObserver;
 
@@ -158,7 +158,7 @@ int main() {
   delete pA;
   delete pA2;
   delete pA3;
-  delete pVA;*/
+  delete pVA;
 /*
   // Создание массива
   DataStructure* pL = DataStructure::createList<int>(10);
@@ -203,7 +203,7 @@ int main() {
 
   delete pL;
   delete pL2;*/
-
+/*
   DataStructure* pDL = DataStructure::createDLList<int>(10);
   DLList<int>* pdl = dynamic_cast<DLList<int>*>(pDL);
 
@@ -231,6 +231,6 @@ int main() {
   for (Iterator<int>* i = &(--dlie); *i != dlib; --(*i), ++cnt) {
     cout << cnt << " " << (*i) << endl;
   }
-
+  */
   return 0;
 }

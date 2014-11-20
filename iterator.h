@@ -123,41 +123,6 @@ bool Iterator<Item>::operator < (const Iterator<Item>& iter) const {
 }
 
 template <class Item>
-const Iterator<Item> operator + (const Iterator<Item>& iter, ptrdiff_t diff) {
-  iter.checkPointer();
-  return Iterator<Item>(iter) += diff;
-}
-
-template <class Item>
-const Iterator<Item> operator + (ptrdiff_t diff, const Iterator<Item>& iter) {
-  iter.checkPointer();
-  return iter + diff;
-}
-
-template <class Item>
-const Iterator<Item> operator - (const Iterator<Item>& iter, ptrdiff_t diff) {
-  iter.checkPointer();
-  return Iterator<Item>(iter) -= diff;
-}
-
-template <class Item>
-const Iterator<Item> operator ++ (Iterator<Item>& iter, int) {
-  iter.checkPointer();
-  Iterator<Item> ret(iter);
-  ++iter;
-  return ret;
-}
-
-template <class Item>
-const Iterator<Item> operator -- (Iterator<Item>& iter, int) {
- iter.checkPointer();
-  Iterator<Item> ret(iter);
-  --iter;
-  return ret;
-}
-
-
-template <class Item>
 Iterator<Item>& Iterator<Item>::operator ++ () {
   checkPointer();
   return vIncrease();
