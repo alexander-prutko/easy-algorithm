@@ -13,7 +13,7 @@ namespace easy_algorithm {
   public:
     typedef typename DLList<Item>::dllink dllink;
     DLListIterator(const Iterator<Item>& iter);                                // Конструктор копирования. Создает итератор идентичный iter
-    DLListIterator(dllink item);                                                // Конструктор с параметром, на какой элемент указывать
+    DLListIterator(dllink item);                                               // Конструктор с параметром, на какой элемент указывать
     virtual ~DLListIterator();                                                 // Виртуальный деструктор позволяет полиморфное удаление объектов
     DLListIterator();                                                          // Конструктор по умолчанию
     dllink getNode() const;
@@ -21,7 +21,7 @@ namespace easy_algorithm {
 
   private:
     virtual std::ostream& vPrint(std::ostream& os, const Iterator<Item>& iter) const;               // Вывод значения элемента в поток
-    virtual std::istream& vInput(std::istream& is, Iterator<Item>& ds);     // Ввод значения элемента из потока
+    virtual std::istream& vInput(std::istream& is, Iterator<Item>& ds);   // Ввод значения элемента из потока
 
     virtual Iterator<Item>& vIncrease();                                  // Соответствует operator ++
     virtual Iterator<Item>& vDecrease();                                  // Соответствует operator --
@@ -119,7 +119,7 @@ namespace easy_algorithm {
   }
 
   template <class Item>
-  void DLListIterator<Item>::vSwap(Iterator<Item>& iter) { //??? переделать
+  void DLListIterator<Item>::vSwap(Iterator<Item>& iter) {
     Item* temp = _pItem;
     _pItem = iter.getPointer();
     iter.setPointer(temp);

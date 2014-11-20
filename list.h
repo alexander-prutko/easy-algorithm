@@ -14,10 +14,10 @@ class ListIterator;                              // Предварительно
 template <class Item>
 class List : public DataStructure {              // Класс-массив
 public:
-  struct list {
+  struct list {                                  // Структура - реализация узлов списка
     list(Item i = Item(), list* l = NULL) : item(i), next(l) {}
-    Item item;
-    list* next;
+    Item item;                                   // Элемент списка
+    list* next;                                  // Указатели на следующий узел списка
   };
   typedef list* link;
 
@@ -35,7 +35,7 @@ public:
 
 protected:
   link getPointer() const;                        // Возвращает указатель на список (pList)
-  link getEnd() const;
+  link getEnd() const;                            // Возвращает указатель на конец списка (pEnd)
   void setPointer(link s, link e);                // Устанавливает указатель на список (pList)
   List(size_t maxSize);                           // Конструкторы закрытые, объекты класса List создаются
   List(const DataStructure& olist);               // с помощью производящих функций класса DataStructure
@@ -51,25 +51,25 @@ private:
   void vRemove();
   void vSetCur1(size_t index) const;
   void vSetCur2(size_t index) const;
-  bool vCompare();
+  bool vCompare() const;
 
   link pList;                                           // Указатель на список
-  link pEnd;
+  link pEnd;                                            // Указатель на конец списка
   mutable link _pCur1, _pCur2;                          // Указатели на элементы списка, на которые указывают курсоры _cur1 и _cur2
 };
 
 template <class Item>
-ListIterator<Item> List<Item>::begin() const {//?
+ListIterator<Item> List<Item>::begin() const {          // Возвращает итератор на начало списка
   return ListIterator<Item>(pList->next);
 }
 
 template <class Item>
-ListIterator<Item> List<Item>::end() const {//?
-  return ListIterator<Item>(pEnd);                            // В качестве параметра - ссылка на элемент после последнего элемента
+ListIterator<Item> List<Item>::end() const {            // Возвращает итератор на конец списка
+  return ListIterator<Item>(pEnd);                      // В качестве параметра - указатель на узел после последнего узла (конец списка)
 }
 
 template <class Item>
-List<Item>::List(size_t maxSize) : DataStructure(maxSize), _pCur1(0), _pCur2(0) { //готово
+List<Item>::List(size_t maxSize) : DataStructure(maxSize), _pCur1(0), _pCur2(0) {
   pList = new list();
   pEnd = new list();
   pList->next = pEnd;
@@ -78,7 +78,7 @@ List<Item>::List(size_t maxSize) : DataStructure(maxSize), _pCur1(0), _pCur2(0) 
 }
 
 template <class Item>
-List<Item>::List(const DataStructure& olist) : DataStructure(olist), _pCur1(0), _pCur2(0) {  //готово
+List<Item>::List(const DataStructure& olist) : DataStructure(olist), _pCur1(0), _pCur2(0) {
   pList = new list();
   pEnd = new list();
   pList->next = pEnd;
@@ -89,13 +89,13 @@ List<Item>::List(const DataStructure& olist) : DataStructure(olist), _pCur1(0), 
   const List<Item>* pL = (dynamic_cast<const List<Item>*>(&olist));          // Преобразование к List<Item>*, т.к. vPrint вызовется точно для List
   link pLink = pL->pList;
   for(size_t i = 0; i < olist.Size(); ++i) {
-    insert(pLink->next->item);
+    insert(pLink->next->item);                                               // Вставка новых элементов из olist
     pLink = pLink->next;
   }
 }
 
 template <class Item>
-std::ostream& List<Item>::vPrint(std::ostream& os, const DataStructure& ds) const { //готово
+std::ostream& List<Item>::vPrint(std::ostream& os, const DataStructure& ds) const {
   const List<Item>* pL = (dynamic_cast<const List<Item>*>(&ds));          // Преобразование к List<Item>*, т.к. vPrint вызовется точно для List
   link pLink = pL->pList;
   for(size_t i = 0; i < ds.Size(); ++i) {
@@ -106,7 +106,7 @@ std::ostream& List<Item>::vPrint(std::ostream& os, const DataStructure& ds) cons
 }
 
 template <class Item>
-std::istream& List<Item>::vInput(std::istream& is, DataStructure& ds) { //готово
+std::istream& List<Item>::vInput(std::istream& is, DataStructure& ds) {
   List<Item>* pL = (dynamic_cast<List<Item>*>(&ds));                      // Преобразование к List<Item>*, т.к. vInput вызовется точно для List
   Item temp;
   if(ds.Size() < ds.maxSize()) {                                          // Если структура данных заполнена, вводимое значение игнорируется
@@ -118,7 +118,7 @@ std::istream& List<Item>::vInput(std::istream& is, DataStructure& ds) { //гот
 }
 
 template <class Item>
-void List<Item>::insert(Item item) { //готово
+void List<Item>::insert(Item item) {
   size_t size = Size();
   if(size == maxSize())
     throw std::length_error("Unable to insert a new itement!");
@@ -126,11 +126,11 @@ void List<Item>::insert(Item item) { //готово
 }
 
 template <class Item>
-void List<Item>::insert(Item item, size_t index) { //готово
+void List<Item>::insert(Item item, size_t index) {
   size_t size = Size();
   if (index)
     setCur1(index - 1);
-  //setSize(size + 1);
+
   if(size >= maxSize())
     throw std::length_error("Unable to insert a new itement!");
   if (index > size || index < 0)
@@ -142,29 +142,25 @@ void List<Item>::insert(Item item, size_t index) { //готово
       pList->next = new list(item, (*this)[index]->next);
   } else
   if (index == size) {
-    //pList[index] = item;                                                    // Вставка в конец списка
-    (*this)[index - 1]->next->next = new list(item, pEnd);
+    (*this)[index - 1]->next->next = new list(item, pEnd);                    // Вставка в конец списка
   } else {
     (*this)[index - 1]->next->next = new list(item, (*this)[index]->next);
-    /*for(size_t i = size - 1; i >= index; --i)
-      pList[i + 1] = pList[i];                                                // Сдвиг части списка, начиная с места вставки, вправо
-    pList[index] = item;*/
   }
   setSize(size + 1);
 }
 
 template <class Item>
-typename List<Item>::link List<Item>::getPointer() const { //готово?
+typename List<Item>::link List<Item>::getPointer() const {
   return pList;
 }
 
 template <class Item>
-typename List<Item>::link List<Item>::getEnd() const { //готово?
+typename List<Item>::link List<Item>::getEnd() const {
   return pEnd;
 }
 
 template <class Item>
-void List<Item>::setPointer(link s, link e) { //готово?
+void List<Item>::setPointer(link s, link e) {
   pList = s;
   pEnd = e;
 }
@@ -173,7 +169,7 @@ template <class Item>
 void List<Item>::vSwap(DataStructure& ds) {                                // Обмен внутреннего содержания списков
   List<Item>* ptrList = dynamic_cast<List<Item>*>(&ds);                    // Преобразование к List<Item>*, т.к. vSwap вызовется точно для List
   
-  link tempList = pList;
+  link tempList = pList;                                                   // Обмен внутренними данными
   link tempEnd = pEnd;
   pList = ptrList->getPointer();
   pEnd = ptrList->getEnd();
@@ -198,35 +194,30 @@ void List<Item>::vSwap(DataStructure& ds) {                                // О
 }
 
 template <class Item>
-typename List<Item>::link List<Item>::operator [] (size_t index) { //готово
+typename List<Item>::link List<Item>::operator [] (size_t index) {
   checkIndex(index);
   size_t c1 = getCur1();
   size_t c2 = getCur2();
   link pL = pList;
-  if (index < c1 && index < c2) {
-    for (size_t i = 0; i < index; ++i)
+  if (index < c1 && index < c2) {                               // Находим ближайший к искомому узлу курсор
+    for (size_t i = 0; i < index; ++i)                          // нет такого
       pL = pL->next;
-    //pL = pL->next;
   } else
-  if (c1 <= index && (c2 <= c1 || (c1 < c2 && c2 > index))) {
+  if (c1 <= index && (c2 <= c1 || (c1 < c2 && c2 > index))) {   // 1-й
     pL = _pCur1;
     for (size_t i = c1; i < index; ++i)
       pL = pL->next;
-    //pL = pL->next;
   } else
-  if (c2 <= index && (c1 <= c2 || (c2 < c1 && c1 > index))) {
+  if (c2 <= index && (c1 <= c2 || (c2 < c1 && c1 > index))) {   // 2-й
     pL = _pCur2;
     for (size_t i = c2; i < index; ++i)
       pL = pL->next;
-    //pL = pL->next;
   }
-  //setCur1(index);
-  //_pCur1 = pL;
-  return pL; //возвращаем ссылку на временный объект или нет?
+  return pL;
 }
 
 template <class Item>
-typename List<Item>::link List<Item>::operator [] (size_t index) const { //готово
+typename List<Item>::link List<Item>::operator [] (size_t index) const {
   checkIndex(index);
   size_t c1 = getCur1();
   size_t c2 = getCur2();
@@ -234,78 +225,73 @@ typename List<Item>::link List<Item>::operator [] (size_t index) const { //го�
   if (index < c1 && index < c2) {
     for (size_t i = 0; i < index; ++i)
       pL = pL->next;
-    //pL = pL->next;
   }
   else
   if (c1 <= index && (c2 <= c1 || (c1 < c2 && c2 > index))) {
     pL = _pCur1;
     for (size_t i = c1; i < index; ++i)
       pL = pL->next;
-    //pL = pL->next;
   }
   else
   if (c2 <= index && (c1 <= c2 || (c2 < c1 && c1 > index))) {
     pL = _pCur2;
     for (size_t i = c2; i < index; ++i)
       pL = pL->next;
-    //pL = pL->next;
   }
-  //setCur1(index);
-  //_pCur1 = pL;
-  return pL; //возвращаем ссылку на временный объект или нет?
+  return pL;
 }
 
 template <class Item>
 const DataStructure& List<Item>::vAssign(const DataStructure& ds) {    // Идиома создания временного объекта и обмена
-  DataStructure* temp = DataStructure::createList<Item>(ds); //заглушка (но вроде должна норм работать)
+  DataStructure* temp = DataStructure::createList<Item>(ds);
   swap(*temp);
   delete temp;
   return *this; 
 }
 
 template <class Item>
-List<Item>::~List() { //готово
+List<Item>::~List() {
   link temp = pList;
   while(temp != pEnd) {
     temp = pList->next;
-    delete(pList);
+    delete(pList);                      // Последовательное удаление узлов, начиная с начала
     pList = temp;
   }
   delete(pList);
 }
 
 template <class Item>
-void List<Item>::vSetCur1(size_t index) const { //готово
+void List<Item>::vSetCur1(size_t index) const {
   _pCur1 = (operator[](index));
 }
 
 template <class Item>
-void List<Item>::vSetCur2(size_t index) const { //готово
+void List<Item>::vSetCur2(size_t index) const {
   _pCur2 = (operator[](index)); 
 }
 
 template <class Item>
-bool List<Item>::vCompare() { //готово
+bool List<Item>::vCompare() const {
   return _pCur1->next->item < _pCur2->next->item;
 }
 
 template <class Item>
-void List<Item>::vSwap() { //заглушка
+void List<Item>::vSwap() {
   size_t c1 = getCur1();
   size_t c2 = getCur2();
-  if (c1 == c2 - 1) {
+  if (c1 == c2 - 1) {                               // Если узлы смежные (1 вариант)
     link temp = _pCur2->next->next;
     _pCur2->next->next = _pCur1->next;
     _pCur1->next = _pCur2->next;
     _pCur2->next = temp;
   }
-  else if (c2 == c1 - 1) {
+  else if (c2 == c1 - 1) {                          // Если узлы смежные (2 вариант)
     link temp = _pCur1->next->next;
     _pCur1->next->next = _pCur2->next;
     _pCur2->next = _pCur1->next;
     _pCur1->next = temp;
   }
-  else {
+  else {                                            // Если узлы не смежные
     std::swap(_pCur1->next, _pCur2->next);
     std::swap(_pCur1->next->next, _pCur2->next->next);
   }
@@ -314,22 +300,28 @@ void List<Item>::vSwap() { //заглушка
 }
 
 template <class Item>
-void List<Item>::vReplace() { //готово
-  link temp = _pCur1->next;
-  _pCur1->next = _pCur1->next->next;
-  if(getCur1() > getCur1()) {
-    temp->next = _pCur2->next;
-    _pCur2->next = temp;
-  } else {
-    temp->next = _pCur2->next->next;
-    _pCur2->next->next = temp;
+void List<Item>::vReplace() {
+  if (getCur1() + 1 == getCur2()) {
+    swap();
+  }
+  else {
+    link temp = _pCur1->next;
+    _pCur1->next = _pCur1->next->next;
+    if (getCur1() > getCur2()) {                       // Если перемещение назад
+      temp->next = _pCur2->next;
+      _pCur2->next = temp;
+    }
+    else {                                          // Если перемещение вперед
+      temp->next = _pCur2->next->next;
+      _pCur2->next->next = temp;
+    }
   }
   setCur1(0);
   setCur2(0);
 }
 
 template <class Item>
-void List<Item>::vRemove() { //готово
+void List<Item>::vRemove() {
   size_t size = Size();
   link temp = _pCur1->next;
   _pCur1->next = _pCur1->next->next;

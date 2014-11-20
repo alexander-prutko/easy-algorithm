@@ -43,7 +43,7 @@ private:
   void vRemove();
   void vSetCur1(size_t index) const;
   void vSetCur2(size_t index) const;
-  bool vCompare();
+  bool vCompare() const;
 
   Item* pArray;                                   // Указатель на массив
   mutable Item *_pCur1, *_pCur2;                          // Указатели на элементы массива, на которые указывают курсоры _cur1 и _cur2
@@ -192,7 +192,7 @@ void Array<Item>::vSetCur2(size_t index) const {
 }
 
 template <class Item>
-bool Array<Item>::vCompare() {
+bool Array<Item>::vCompare() const {
   return *_pCur1 < *_pCur2;
 }
 

@@ -13,7 +13,7 @@ class ListIterator : public Iterator<Item> {                               // К
 public:
   typedef typename List<Item>::link link;
   ListIterator(const Iterator<Item>& iter);                                // Конструктор копирования. Создает итератор идентичный iter
-  ListIterator(link item);                                                // Конструктор с параметром, на какой элемент указывать
+  ListIterator(link item);                                                 // Конструктор с параметром, на какой элемент указывать
   virtual ~ListIterator();                                                 // Виртуальный деструктор позволяет полиморфное удаление объектов
   ListIterator();                                                          // Конструктор по умолчанию
   link getNode() const;
@@ -33,7 +33,7 @@ private:
 
 protected:
   using Iterator<Item>::_pItem;                                         // Указатель на элемент, на который ссылается итератор
-  link _pNode;
+  link _pNode;                                                          // Указатель на узел с элементом
 };
 
 template <class Item>

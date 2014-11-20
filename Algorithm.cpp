@@ -15,7 +15,7 @@ int main() {
   using namespace std;
   using namespace easy_algorithm;
 
-  ListIterator<int> lll;
+  ArrayIterator<int> lll;
 
   srand((unsigned)time(NULL));
 
@@ -53,7 +53,7 @@ int main() {
   cin >> iter;
   // Смещаем итераторы
   ++iter;
-  --iter2;
+  //--iter2;
   cout << "The second element is " << iter << endl;
   cout << "The third element is " << (*pa)[2] << endl;
   cout << "The last element is " << iter2 << endl;
@@ -80,7 +80,8 @@ int main() {
 
   // Сортировка массива
   // Создание объекта, реализующего метод сортировки выбором
-  SortAlgorithm* ss = new ShellSort/*BubbleSort*//*InsertionSort*//*SelectionSort*/;
+  //SortAlgorithm* ss = new ShellSort/*BubbleSort*//*InsertionSort*//*SelectionSort*/;
+  SortAlgorithm* ss = new InsertionSort;
   // Объект, подсчитывающий время выполнения операций
   TimeObserver* to = new TimeObserver;
 
@@ -111,7 +112,7 @@ int main() {
     cout << intVec[i] << endl;
   }
 
-  // Создание адаптера для вектора
+  /*// Создание адаптера для вектора
   DataStructure* pVA = DataStructure::createVectorAdapter<int>(intVec);
   s.resetTimeObserver();
   s.setDataStructure(pVA);
@@ -131,7 +132,7 @@ int main() {
   cout << "Total search time (ms): " << s.getSearchTime() << endl;
   cout << "Comparison, assignment and search time (ms): " <<  s.getComparisonTime() + s.getAssignmentTime() + s.getSearchTime() << endl;
   cout << "Total time (ms): " << s.getTotalTime() << endl;
-
+  */
   // Создание структуры данных из 1000 элементов
   DataStructure* pA3 = DataStructure::createArray<int>(1000);
   Array<int>* pa3 = dynamic_cast<Array<int>*>(pA3);
@@ -158,11 +159,11 @@ int main() {
   delete pA;
   delete pA2;
   delete pA3;
-  delete pVA;
+//  delete pVA;
 /*
   // Создание массива
-  DataStructure* pL = DataStructure::createList<int>(10);
-  List<int>* pl = dynamic_cast<List<int>*>(pL);
+  DataStructure* pL = DataStructure::createArray<int>(10);
+  Array<int>* pl = dynamic_cast<Array<int>*>(pL);
 
   //(*pl)[0]->item=(*pl)[1]->item;
   pl->insert(51);
@@ -178,7 +179,7 @@ int main() {
   cin >> *pL;
   cout << endl << *pL;
 
-  DataStructure* pL2 = DataStructure::createList<int>(10);
+  DataStructure* pL2 = DataStructure::createArray<int>(10);
 
   *pL2 = *pL;
   cout << endl << *pL2;
@@ -195,17 +196,17 @@ int main() {
   Sort s(pL, ss, to);
   // Выполнение сортировки
   s.sort();
-  ListIterator<int> lib = (pl->begin());
-  ListIterator<int> lie = (pl->end());
-  for (ListIterator<int> i = lib; i != lie; ++i, ++cnt) {
+  ArrayIterator<int> lib = (pl->begin());
+  ArrayIterator<int> lie = (pl->end());
+  for (ArrayIterator<int> i = lib; i != lie; ++i, ++cnt) {
     cout << cnt << " " << (*i) << endl;
   }
 
   delete pL;
   delete pL2;*/
 /*
-  DataStructure* pDL = DataStructure::createDLList<int>(10);
-  DLList<int>* pdl = dynamic_cast<DLList<int>*>(pDL);
+  DataStructure* pDL = DataStructure::createArray<int>(10);
+  Array<int>* pdl = dynamic_cast<Array<int>*>(pDL);
 
   //(*pl)[0]->item=(*pl)[1]->item;
   pdl->insert(51);
@@ -226,8 +227,8 @@ int main() {
 
   int cnt = 0;
 
-  DLListIterator<int> dlib = --(pdl->begin());
-  DLListIterator<int> dlie = (pdl->end());
+  ArrayIterator<int> dlib = --(pdl->begin());
+  ArrayIterator<int> dlie = (pdl->end());
   for (Iterator<int>* i = &(--dlie); *i != dlib; --(*i), ++cnt) {
     cout << cnt << " " << (*i) << endl;
   }

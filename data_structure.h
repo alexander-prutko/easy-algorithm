@@ -29,9 +29,9 @@ public:
   template <class Item>
   static DataStructure* createList(const DataStructure& list);              // Производящая функция List(const DataStructure&)
   template <class Item>
-  static DataStructure* createDLList(size_t maxSize);                         // Производящая функция List(size_t)
+  static DataStructure* createDLList(size_t maxSize);                       // Производящая функция List(size_t)
   template <class Item>
-  static DataStructure* createDLList(const DataStructure& dllist);              // Производящая функция List(const DataStructure&)
+  static DataStructure* createDLList(const DataStructure& dllist);          // Производящая функция List(const DataStructure&)
   template <class Item>
   static DataStructure* createVectorAdapter(std::vector<Item>& array);      // Производящая функция VectorAdapter(std::vector<Item>&)
   
@@ -41,7 +41,7 @@ public:
   void swap(DataStructure& ds);                         // Поменять структуры данных
   void replace(size_t source, size_t dest);             // Переставить элемент с индексом source в позицию dest
   void remove(size_t index);                            // Удалить элемент с индексом index
-  bool compare(size_t index1, size_t index2);           // Возвращает true, если элемент 1 меньше элемента 2
+  bool compare(size_t index1, size_t index2) const;     // Возвращает true, если элемент 1 меньше элемента 2
   const DataStructure& operator = (const DataStructure& ds);    // Делает содержание структуры данных идентичной ds
   
   size_t Size() const;                                  // Возвращает количество элементов
@@ -51,18 +51,18 @@ public:
   void swap();                                          // Поменять местами 2 элемента с индексами _cur1 и _cur2
   void replace();                                       // Переставить элемент с индексом _cur1 в позицию _cur2
   void remove();                                        // Удалить элемент с индексом _cur1
-  void setCur1(size_t index) const;                           // Установить курсор _cur1 на позицию index
-  void setCur2(size_t index) const;                           // Установить курсор _cur2 на позицию index
-  bool compare();                                       // Возвращает true, если элемент _cur1 меньше элемента _cur2
-  size_t getCur1() const;                                     // Возвращает индекс (курсор) _cur1
-  size_t getCur2() const;                                     // Возвращает индекс (курсор) _cur2
+  void setCur1(size_t index) const;                     // Установить курсор _cur1 на позицию index
+  void setCur2(size_t index) const;                     // Установить курсор _cur2 на позицию index
+  bool compare() const;                                 // Возвращает true, если элемент _cur1 меньше элемента _cur2
+  size_t getCur1() const;                               // Возвращает индекс (курсор) _cur1
+  size_t getCur2() const;                               // Возвращает индекс (курсор) _cur2
 
 protected:
   explicit DataStructure(size_t maxSize);                 // Конструктор, задающий максимальный размер структуры данных
                                                           // (не позволяет неявного преобразования)
   DataStructure(const DataStructure& ds);                 // Конструктор копирования
   
-  void checkIndex(size_t index) const;                          // Проверка индекса (вызывает исключение при нарушении)
+  void checkIndex(size_t index) const;                    // Проверка индекса (вызывает исключение при нарушении)
   void setSize(size_t size);                              // Устанавливает количество элементов
   void setMaxSize(size_t size);                           // Устанавливает максимальный размер структуры данных
 
@@ -70,19 +70,19 @@ private:
   virtual std::ostream& vPrint(std::ostream& os, const DataStructure& ds) const = 0;    // Вывод структуры данных в поток
   virtual std::istream& vInput(std::istream& is, DataStructure& ds) = 0;    // Ввод структуры данных из потока
 
-  virtual void vSwap(DataStructure& ds) = 0;                            // Соответствует swap(DataStructure& ds)
-  virtual const DataStructure& vAssign(const DataStructure& ds) = 0;    // Соответствует operator =             
+  virtual void vSwap(DataStructure& ds) = 0;                                // Соответствует swap(DataStructure& ds)
+  virtual const DataStructure& vAssign(const DataStructure& ds) = 0;        // Соответствует operator =
 
   virtual void vSwap() = 0;                               // Виртуальные функции, соответствующие открытому интерфейсу класса
   virtual void vReplace() = 0;                            // Должны быть переопределены в производных классах
   virtual void vRemove() = 0;
   virtual void vSetCur1(size_t index) const = 0;
   virtual void vSetCur2(size_t index) const = 0;
-  virtual bool vCompare() = 0;
+  virtual bool vCompare() const = 0;
   
   size_t _size;                                           // Количество элементов в структуре данных
   size_t _maxSize;                                        // Максимальное количество элементов в структуре данных
-  mutable size_t _cur1, _cur2;                                    // Курсоры - индексы элементов, над которыми производятся операции
+  mutable size_t _cur1, _cur2;                            // Курсоры - индексы элементов, над которыми производятся операции
 };
 
 template <class Item>

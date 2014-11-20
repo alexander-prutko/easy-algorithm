@@ -54,7 +54,7 @@ void InsertionSort::vSort(DataStructure* pDS, TimeObserver* pTO) {
   {
   Timer t(pTO, 2);  // Запуск счетчика (2 тип) - Полное время
 
-  for (size_t i = s - 1; i > 0; i--) {
+  for (size_t i = s - 1; i > 0; i--) {                // Алгоритм сортировки вставками
     {
     Timer t(pTO, 3);  // Запуск счетчика (3 тип) - Время поиска элемента
     pDS->setCur1(i);
@@ -121,7 +121,7 @@ void BubbleSort::vSort(DataStructure* pDS, TimeObserver* pTO) {
   {
   Timer t(pTO, 2);  // Запуск счетчика (2 тип) - Полное время
 
-  for (size_t i = 0; i < s - 1; i++)
+  for (size_t i = 0; i < s - 1; i++)                  // Алгоритм сортировки пузырьком
     for (size_t j = s - 1; j > i; j--) {
       {
       Timer t(pTO, 3);  // Запуск счетчика (3 тип) - Время поиска элемента
@@ -155,7 +155,7 @@ void ShellSort::vSort(DataStructure* pDS, TimeObserver* pTO) {
   {
   Timer t(pTO, 2);  // Запуск счетчика (2 тип) - Полное время
 
-  for (h = 0; h <= (s - 1) / 9; h = 3 * h + 1);
+  for (h = 0; h <= (s - 1) / 9; h = 3 * h + 1);       // Алгоритм сортировки Шелла
   for (; h > 0; h /= 3)
     for (size_t i = h; i <= s - 1; i++) {
       size_t j = i;

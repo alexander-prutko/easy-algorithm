@@ -27,13 +27,12 @@ protected:
   using Array<Item>::getPointer;
 
 private:
-  void vSwap(DataStructure&) { throw std::exception(); }                 // Нельзя обменивать вектор с другими структурами данных
+  void vSwap(DataStructure&) { throw std::exception(); }                    // Нельзя обменивать вектор с другими структурами данных
   void vRemove() { throw std::exception(); }                                // Нельзя удалять элементы из вектора (нельзя именять размер)
   void insert(Item item, size_t index);                                     // Запрещаем вставку новых элементов в вектор (нельзя именять размер)
   void insert(Item item);
 
-  Item* temp;
-  //std::vector<Item>* pVector;                                               // Указатель на vector
+  Item* temp;                                                               // Указатель на элемент вектора
 };
 
 template <class Item>
