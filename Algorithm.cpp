@@ -1,237 +1,88 @@
 #include <iostream>
-#include <time.h>
-#include <stdlib.h>
+//#include <fstream>
+#include <vector>
 #include "array.h"
+#include "list.h"
+#include "dllist.h"
 #include "sort_algorithm.h"
 #include "sort.h"
-#include "array_iterator.h"
-#include "vector_adapter.h"
-#include "list.h"
-#include "list_iterator.h"
-#include "dllist.h"
-#include "dllist_iterator.h"
+#include "pod.h"
 
 int main() {
   using namespace std;
   using namespace easy_algorithm;
 
-  ArrayIterator<int> lll;
+  vector<DataStructure* (*)()> vpfCreate;                   // Вектор указателей на функции создания структуры данных с определенным типом элементов
+  vpfCreate.push_back(DSCreate<PODss, Array>::create);
+  vpfCreate.push_back(DSCreate<PODbs, Array>::create);
+  vpfCreate.push_back(DSCreate<PODsb, Array>::create);
+  vpfCreate.push_back(DSCreate<PODbb, Array>::create);
+  vpfCreate.push_back(DSCreate<PODss, List>::create);
+  vpfCreate.push_back(DSCreate<PODbs, List>::create);
+  vpfCreate.push_back(DSCreate<PODsb, List>::create);
+  vpfCreate.push_back(DSCreate<PODbb, List>::create);
+  vpfCreate.push_back(DSCreate<PODss, DLList>::create);
+  vpfCreate.push_back(DSCreate<PODbs, DLList>::create);
+  vpfCreate.push_back(DSCreate<PODsb, DLList>::create);
+  vpfCreate.push_back(DSCreate<PODbb, DLList>::create);
 
-  srand((unsigned)time(NULL));
+  vector<DataStructure*> vpDS;                              // Вектор указателей на структуры данных
+  for (vector<DataStructure* (*)()>::iterator ib = vpfCreate.begin(), ie = vpfCreate.end(); ib != ie; ++ib)
+    vpDS.push_back((*ib)());                                // Наполняется с помощью каждой функции создания из вектора vpfCreate
 
-  // Создание массива
-  DataStructure* pA = DataStructure::createArray<int>(10);
-  Array<int>* pa = dynamic_cast<Array<int>*>(pA);
+  /*ofstream file("unsort.txt");
+  file << *(vpDS[0]);
+  file.close();*/
 
-  // Вставки 6 произвольных элементов в массив
-  for(size_t i = 0; i < 6; ++i)
-    pa->insert(rand());
+  vector<SortAlgorithm*> vSA;                               // Вектор с сортирующими объектами
+  vSA.push_back(new SelectionSort);
+  vSA.push_back(new InsertionSort);
+  vSA.push_back(new BubbleSort);
+  vSA.push_back(new ShellSort);
+  vSA.push_back(new QuickSort);
 
-  // Создаем копию текущего массива
-  DataStructure* pA2 = DataStructure::createArray<int>(*pA);
-  // Вывод копии массива
-  cout << "Array copy:" << endl << *pA;
+  vector<pair<int, int> > SortTable;                        // Вектор - таблица. 1-е число - номер структуры данных из вектора vpDS. 2-е - номер сортирующего объекта
+  SortTable.push_back(make_pair<int, int>(0, 0));           // Array<PODss> SelectionSort
+  SortTable.push_back(make_pair<int, int>(1, 1));           // Array<PODbs> InsertionSort
+  SortTable.push_back(make_pair<int, int>(11, 3));          // DLList<PODbb> ShellSort
 
-  cout << "Insert 3 elements (type 3 integers) at the end of the array:" << endl;
-  // Ввод еще 3 элементов из потока ввода
-  for(int i = 0; i < 3; ++i)
-    cin >> *pA;
+  vector<SortTime> SortTimeTable;                           // Вектор со статистикой для каждой сортировки из таблицы сортировки SortTable
 
-  // Вставка элемента в 4-ю позицию
-  cout << "Insert 1 element at 4th position (type 1 integer):" << endl;
-  {
-    int temp;
-    cin >> temp;
-    pa->insert(temp, 4);
-  }
-
-  // Создание итераторов
-  ArrayIterator<int> iter(pa->begin());
-  ArrayIterator<int> iter2(pa->end());
-  cout << "Enter integer value for the first element:" << endl;
-  // Значение, вводимое с клавиатуры, присваивается элементу, на который указывает итератор (первый элемент)
-  cin >> iter;
-  // Смещаем итераторы
-  ++iter;
-  //--iter2;
-  cout << "The second element is " << iter << endl;
-  cout << "The third element is " << (*pa)[2] << endl;
-  cout << "The last element is " << iter2 << endl;
-  // Вывод всего массива
-  cout << "The whole array:" << endl << *pA;
-  cout << "Size: " << pA->Size() << endl << "Maximal size: " << pA->maxSize() << endl;
-
-  // Обмен первого и последнего элементов массива
-  cout << "Swap the first and the last element" << endl;
-  pA->swap(0,9);
-  // Перемещение 3-го элемента на 8-ю позицию
-  cout << "Replace the third element to the 8th position" << endl;
-  pA->replace(2,7);
-  // Удаление 6-го элемента
-  cout << "Remove the 6th element" << endl;
-  pA->remove(5);
-  cout << "The array is empty: " << boolalpha << pA->empty() << endl;
-  cout << "The 3rd element is less than the 5th element: " << boolalpha << pA->compare(2, 4) << endl;
-  cout << "The whole array:" << endl << *pA;
-
-  // Второй массив становится идентичным первому
-  *pA2 = *pA;
-  cout << "The whole 2nd array after copy:" << endl << *pA;
-
-  // Сортировка массива
-  // Создание объекта, реализующего метод сортировки выбором
-  //SortAlgorithm* ss = new ShellSort/*BubbleSort*//*InsertionSort*//*SelectionSort*/;
-  SortAlgorithm* ss = new InsertionSort;
   // Объект, подсчитывающий время выполнения операций
   TimeObserver* to = new TimeObserver;
 
+  vector<pair<int, int> >::iterator iSortTable = SortTable.begin();
   // Объект-фасад
-  Sort s(pA, ss, to);
-  // Выполнение сортировки
-  s.sort();
-
-  iter = pa->begin();
-  iter2 = pa->end();
-  int cnt = 0;
-  cout << "Sorted array:" << endl;
-  // Вывод массива с помощью итераторов
-  for (ArrayIterator<int> i = iter; i != iter2; ++i, ++cnt) {
-    cout << cnt << " " << i << endl;
-  }
-  cout << "Total comparison time (ms): " << s.getComparisonTime() << endl;
-  cout << "Total assignment time (ms): " << s.getAssignmentTime() << endl;
-  cout << "Total search time (ms): " << s.getSearchTime() << endl;
-  cout << "Comparison, assignment and search time (ms): " <<  s.getComparisonTime() + s.getAssignmentTime() + s.getSearchTime() << endl;
-  cout << "Total time (ms): " << s.getTotalTime() << endl;
-
-  // Создание вектора с элементами {5,4,3,2,1}
-  vector<int> intVec(5);
-  cout << "Creation of vector:" << endl;
-  for (int i = 0; i < 5; ++i) {
-    intVec[i] = 5 - i;
-    cout << intVec[i] << endl;
+  Sort s(vpDS[0], vSA[0], to);
+  while (iSortTable != SortTable.end()) {
+    s.setDataStructure(vpDS[iSortTable->first]);
+    s.setSortAlgorithm(vSA[iSortTable->second]);
+    s.resetTimeObserver();
+    // Выполнение сортировки
+    s.sort();
+    SortTimeTable.push_back(SortTime(s.getTotalTime(), s.getComparisonTime(), s.getAssignmentTime(), s.getSearchTime()));  // Запись статистики
+    //s.resetTimeObserver();
+    ++iSortTable;
   }
 
-  /*// Создание адаптера для вектора
-  DataStructure* pVA = DataStructure::createVectorAdapter<int>(intVec);
-  s.resetTimeObserver();
-  s.setDataStructure(pVA);
-  // Сортировка вектора
-  s.sort();
-
-  VectorAdapter<int>* pva = dynamic_cast<VectorAdapter<int>*>(pVA);
-  ArrayIterator<int> ib = (pva->begin());
-  ArrayIterator<int> ie = (pva->end());
-  cnt = 0;
-  cout << "Sorted vector:" << endl;
-  for (ArrayIterator<int> i = ib; i != ie; ++i, ++cnt) {
-    cout << cnt << " " << (*i) << endl;
+  vector<SortTime>::iterator iSTT = SortTimeTable.begin();
+  while (iSTT != SortTimeTable.end()) {                                                               // Вывод статистики
+    cout << endl << "Sorting array of 1000 elements" << endl;
+    cout << "Total comparison time (ms): " << iSTT->comp << endl;
+    cout << "Total assignment time (ms): " << iSTT->assign << endl;
+    cout << "Total search time (ms): " << iSTT->search << endl;
+    cout << "Comparison, assignment and search time (ms): " << iSTT->comp + iSTT->assign + iSTT->search << endl;
+    cout << "Total time (ms): " << iSTT->total << endl <<endl;
+    ++iSTT;
   }
-  cout << "Total comparison time (ms): " << s.getComparisonTime() << endl;
-  cout << "Total assignment time (ms): " << s.getAssignmentTime() << endl;
-  cout << "Total search time (ms): " << s.getSearchTime() << endl;
-  cout << "Comparison, assignment and search time (ms): " <<  s.getComparisonTime() + s.getAssignmentTime() + s.getSearchTime() << endl;
-  cout << "Total time (ms): " << s.getTotalTime() << endl;
-  */
-  // Создание структуры данных из 1000 элементов
-  DataStructure* pA3 = DataStructure::createArray<int>(1000);
-  Array<int>* pa3 = dynamic_cast<Array<int>*>(pA3);
 
-  // Вставки 1000 произвольных элементов в массив
-  for(size_t i = 0; i < 1000; ++i)
-    pa3->insert(rand());
-
-  s.resetTimeObserver();
-  s.setDataStructure(pA3);
-  s.sort();
-  cout << endl << "Sorting array of 1000 elements" << endl;
-  cout << "Total comparison time (ms): " << s.getComparisonTime() << endl;
-  cout << "Total assignment time (ms): " << s.getAssignmentTime() << endl;
-  cout << "Total search time (ms): " << s.getSearchTime() << endl;
-  cout << "Comparison, assignment and search time (ms): " <<  s.getComparisonTime() + s.getAssignmentTime() + s.getSearchTime() << endl;
-  cout << "Total time (ms): " << s.getTotalTime() << endl;
-  
-  cin.get();
   cin.get();
 
-  delete ss;
+  for (vector<DataStructure*>::iterator ipDS = vpDS.begin(), ipDSe = vpDS.end(); ipDS != ipDSe;)      // Удаление созданных объектов
+  { delete *(ipDS++); }
+  for (vector<SortAlgorithm*>::iterator iSA = vSA.begin(), iSAe = vSA.end(); iSA != iSAe;)
+  { delete *(iSA++); }
   delete to;
-  delete pA;
-  delete pA2;
-  delete pA3;
-//  delete pVA;
-/*
-  // Создание массива
-  DataStructure* pL = DataStructure::createArray<int>(10);
-  Array<int>* pl = dynamic_cast<Array<int>*>(pL);
 
-  //(*pl)[0]->item=(*pl)[1]->item;
-  pl->insert(51);
-  pl->insert(42);
-  pl->insert(33);
-  pl->insert(24,2);
-  pL->swap(2,3);
-  cout << pL->compare(2,3) << " " << (*pl)[2]->next->item << " " << (*pl)[3]->next->item << endl;
-  pL->swap(3,0);
-  pL->replace(1,3);
-  pL->remove(2);
-  cout << *pL << endl;
-  cin >> *pL;
-  cout << endl << *pL;
-
-  DataStructure* pL2 = DataStructure::createArray<int>(10);
-
-  *pL2 = *pL;
-  cout << endl << *pL2;
-
-  int cnt = 0;
-  //++lib;
-  // Сортировка массива
-  // Создание объекта, реализующего метод сортировки выбором
-  SelectionSort* ss = new SelectionSort;
-  // Объект, подсчитывающий время выполнения операций
-  TimeObserver* to = new TimeObserver;
-
-  // Объект-фасад
-  Sort s(pL, ss, to);
-  // Выполнение сортировки
-  s.sort();
-  ArrayIterator<int> lib = (pl->begin());
-  ArrayIterator<int> lie = (pl->end());
-  for (ArrayIterator<int> i = lib; i != lie; ++i, ++cnt) {
-    cout << cnt << " " << (*i) << endl;
-  }
-
-  delete pL;
-  delete pL2;*/
-/*
-  DataStructure* pDL = DataStructure::createArray<int>(10);
-  Array<int>* pdl = dynamic_cast<Array<int>*>(pDL);
-
-  //(*pl)[0]->item=(*pl)[1]->item;
-  pdl->insert(51);
-  pdl->insert(42);
-  pdl->insert(33);
-  pdl->insert(24, 2);
-  pDL->swap(2, 3);
-  pDL->swap(3, 0);
-  pDL->replace(3, 1);
-  //pDL->remove(2);
-  cout << pDL->compare(2, 3) << " " << (*pdl)[2]->next->item << " " << (*pdl)[3]->next->item << endl;
-  //pL->swap(2,3);
-  pDL->replace(1, 3);
-  pDL->remove(2);
-  cout << *pDL << endl;
-  cin >> *pDL;
-  cout << endl << *pDL;
-
-  int cnt = 0;
-
-  ArrayIterator<int> dlib = --(pdl->begin());
-  ArrayIterator<int> dlie = (pdl->end());
-  for (Iterator<int>* i = &(--dlie); *i != dlib; --(*i), ++cnt) {
-    cout << cnt << " " << (*i) << endl;
-  }
-  */
   return 0;
 }

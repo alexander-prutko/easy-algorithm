@@ -104,6 +104,16 @@ private:
   void vSort(DataStructure* pDS, TimeObserver* pTO);
 };
 
+class QuickSort : public SortAlgorithm {                      // Класс, реализующий быструю сортировку
+public:
+  virtual ~QuickSort() {}
+
+private:
+  void vSort(DataStructure* pDS, TimeObserver* pTO);
+  void quicksort(DataStructure* pDS, size_t l, size_t r, TimeObserver* pTO);
+  size_t partition(DataStructure* pDS, size_t l, size_t r, TimeObserver* pTO);
+};
+
 }
 
 #endif

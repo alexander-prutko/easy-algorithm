@@ -200,4 +200,106 @@ void ShellSort::vSort(DataStructure* pDS, TimeObserver* pTO) {
   }
 }
 
+void QuickSort::vSort(DataStructure* pDS, TimeObserver* pTO) {
+  {
+  Timer t(pTO, 2);  // Запуск счетчика (2 тип) - Полное время
+
+  quicksort(pDS, 0, pDS->Size() - 1, pTO);
+
+  }
+}
+
+void QuickSort::quicksort(DataStructure* pDS, size_t l, size_t r, TimeObserver* pTO) {
+  if (r <= l) return;
+	size_t i = partition(pDS, l, r, pTO);
+  if(i == 0)
+    return;
+  else
+	  quicksort(pDS, l, i - 1, pTO);
+  if(i == pDS->Size() - 1)
+    return;
+  else
+	  quicksort(pDS, i + 1, r, pTO);
+}
+
+size_t QuickSort::partition(DataStructure* pDS, size_t l, size_t r, TimeObserver* pTO) {
+  bool cmp;
+  size_t i = l - 1, j = r;
+	//Item v = a[r];
+	for (;;) {
+    {
+    Timer t(pTO, 3);  // Запуск счетчика (3 тип) - Время поиска элемента
+    pDS->setCur1(++i);
+    }
+    {
+    Timer t(pTO, 3);  // Запуск счетчика (3 тип) - Время поиска элемента
+    pDS->setCur2(r);
+    }
+    {
+    Timer t(pTO, 0);  // Запуск счетчика (0 тип) - Время сравнения
+    cmp = pDS->compare();
+    }
+		while (cmp/*a[++i] < v*/) {
+      {
+      Timer t(pTO, 3);  // Запуск счетчика (3 тип) - Время поиска элемента
+      pDS->setCur1(++i);
+      }
+      {
+      Timer t(pTO, 0);  // Запуск счетчика (0 тип) - Время сравнения
+      cmp = pDS->compare();
+      }
+    }
+    {
+    Timer t(pTO, 3);  // Запуск счетчика (3 тип) - Время поиска элемента
+    pDS->setCur1(r);
+    }
+    {
+    Timer t(pTO, 3);  // Запуск счетчика (3 тип) - Время поиска элемента
+    pDS->setCur2(--j);
+    }
+    {
+    Timer t(pTO, 0);  // Запуск счетчика (0 тип) - Время сравнения
+    cmp = pDS->compare();
+    }
+		while (cmp/*v < a[--j]*/) {
+			if (j == i)
+				break;
+      {
+      Timer t(pTO, 3);  // Запуск счетчика (3 тип) - Время поиска элемента
+      pDS->setCur2(--j);
+      }
+      {
+      Timer t(pTO, 0);  // Запуск счетчика (0 тип) - Время сравнения
+      cmp = pDS->compare();
+      }
+    }
+		if (i >= j)
+			break;
+		//exch(a[i], a[j]);
+    {
+    Timer t(pTO, 3);  // Запуск счетчика (3 тип) - Время поиска элемента
+    pDS->setCur1(i);
+    }
+    //pDS->setCur2(j);//?
+    {
+    Timer t(pTO, 1);  // Запуск счетчика (1 тип) - Время присваивания
+    pDS->swap();
+    }
+	}
+	//exch(a[i], a[r]);
+  {
+  Timer t(pTO, 3);  // Запуск счетчика (3 тип) - Время поиска элемента
+  pDS->setCur1(i);
+  }
+  {
+  Timer t(pTO, 3);  // Запуск счетчика (3 тип) - Время поиска элемента
+  pDS->setCur2(r);
+  }
+  {
+  Timer t(pTO, 1);  // Запуск счетчика (1 тип) - Время присваивания
+  pDS->swap();
+  }
+	return i;
+}
+
 }

@@ -27,6 +27,11 @@ private:
   TimeObserver* _pTO;
 };
 
+struct SortTime {
+  double total, comp, assign, search;
+  SortTime(double t, double c, double a, double s) : total(t), comp(c), assign(a), search(s) {}
+};
+
 }
 
 #endif

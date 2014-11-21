@@ -120,6 +120,59 @@ DataStructure* DataStructure::createVectorAdapter(std::vector<Item>& array) {   
   return new VectorAdapter<Item>(array);                                        // Возвращается указатель DataStructure* на объект Array<Item>
 }
 
+template <class POD, template<class> class DS = Array>                          // Первичный шаблон класса для создания структур данных
+class DSCreate {
+public:
+  static DataStructure* create() {
+    return NULL;
+  }
+};
+
+template <class POD>                                                            // Шаблон класса для создания массива
+class DSCreate<POD, Array> {
+public:
+  static DataStructure* create() {
+    using namespace easy_algorithm;
+    DataStructure* pDS = DataStructure::createArray<POD>(1000);
+    Array<POD>* pConcreteDS = dynamic_cast<Array<POD>*>(pDS);
+
+    for (size_t i = 0; i < 1000; ++i)
+      pConcreteDS->insert(POD());
+
+    return pDS;
+  }
+};
+
+template <class POD>                                                            // Шаблон класса для создания списка
+class DSCreate<POD, List> {
+public:
+  static DataStructure* create() {
+    using namespace easy_algorithm;
+    DataStructure* pDS = DataStructure::createList<POD>(1000);
+    List<POD>* pConcreteDS = dynamic_cast<List<POD>*>(pDS);
+
+    for (size_t i = 0; i < 1000; ++i)
+      pConcreteDS->insert(POD());
+
+    return pDS;
+  }
+};
+
+template <class POD>                                                              // Шаблон класса для создания двусвязного списка
+class DSCreate<POD, DLList> {
+public:
+  static DataStructure* create() {
+    using namespace easy_algorithm;
+    DataStructure* pDS = DataStructure::createDLList<POD>(1000);
+    DLList<POD>* pConcreteDS = dynamic_cast<DLList<POD>*>(pDS);
+
+    for (size_t i = 0; i < 1000; ++i)
+      pConcreteDS->insert(POD());
+
+    return pDS;
+  }
+};
+
 }
 
 #endif
