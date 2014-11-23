@@ -48,7 +48,7 @@ namespace easy_algorithm {
     void vSwap(DataStructure& ds);                                // Переопределение чисто виртуальных функций DataStructure
     const DataStructure& vAssign(const DataStructure& ds);
     void vSwap();
-    void vReplace();
+    void vMove();
     void vRemove();
     void vSetCur1(size_t index) const;
     void vSetCur2(size_t index) const;
@@ -330,7 +330,7 @@ namespace easy_algorithm {
   }
 
   template <class Item>
-  void DLList<Item>::vReplace() {
+  void DLList<Item>::vMove() {
     size_t c1 = getCur1();
     size_t c2 = getCur2();
     if (c2 < c1) {

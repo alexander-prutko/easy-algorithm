@@ -108,7 +108,7 @@ void InsertionSort::vSort(DataStructure* pDS, TimeObserver* pTO) {
     }
     {
     Timer t(pTO, 1);  // Запуск счетчика (1 тип) - Время присваивания
-    pDS->replace();
+    pDS->move();
     }
   }
 
@@ -193,7 +193,7 @@ void ShellSort::vSort(DataStructure* pDS, TimeObserver* pTO) {
       }
       {
       Timer t(pTO, 1);  // Запуск счетчика (1 тип) - Время присваивания
-      pDS->replace();
+      pDS->move();
       }
     }
 

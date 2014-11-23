@@ -39,7 +39,7 @@ private:
   void vSwap(DataStructure& ds);                            // Переопределение чисто виртуальных функций DataStructure
   const DataStructure& vAssign(const DataStructure& ds);
   void vSwap();
-  void vReplace();
+  void vMove();
   void vRemove();
   void vSetCur1(size_t index) const;
   void vSetCur2(size_t index) const;
@@ -202,7 +202,7 @@ void Array<Item>::vSwap() {
 }
 
 template <class Item>
-void Array<Item>::vReplace() {
+void Array<Item>::vMove() {
   size_t cur1 = getCur1();
   size_t cur2 = getCur2();
   if (cur1 < cur2) {

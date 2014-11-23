@@ -62,13 +62,13 @@ void DataStructure::swap(DataStructure& ds) {
   vSwap(ds);
 }
 
-void DataStructure::replace(size_t source, size_t dest) {
+void DataStructure::move(size_t source, size_t dest) {
   checkIndex(source);
   checkIndex(dest);
   if(source != dest) {
     setCur1(source);
     setCur2(dest);
-    vReplace();
+    vMove();
   }
 }
 
@@ -123,9 +123,9 @@ void DataStructure::swap() {
     vSwap();
 }
 
-void DataStructure::replace() {
+void DataStructure::move() {
   if (_cur1 != _cur2)
-    vReplace();
+    vMove();
 }
 
 void DataStructure::remove() {

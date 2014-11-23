@@ -39,7 +39,7 @@ public:
 
   void swap(size_t index1, size_t index2);              // Поменять местами 2 элемента с индексами index1 и index2
   void swap(DataStructure& ds);                         // Поменять структуры данных
-  void replace(size_t source, size_t dest);             // Переставить элемент с индексом source в позицию dest
+  void move(size_t source, size_t dest);                // Переставить элемент с индексом source в позицию dest
   void remove(size_t index);                            // Удалить элемент с индексом index
   bool compare(size_t index1, size_t index2) const;     // Возвращает true, если элемент 1 меньше элемента 2
   const DataStructure& operator = (const DataStructure& ds);    // Делает содержание структуры данных идентичной ds
@@ -49,7 +49,7 @@ public:
   bool empty() const;                                   // Возвращает true, если елементов нет
 
   void swap();                                          // Поменять местами 2 элемента с индексами _cur1 и _cur2
-  void replace();                                       // Переставить элемент с индексом _cur1 в позицию _cur2
+  void move();                                          // Переставить элемент с индексом _cur1 в позицию _cur2
   void remove();                                        // Удалить элемент с индексом _cur1
   void setCur1(size_t index) const;                     // Установить курсор _cur1 на позицию index
   void setCur2(size_t index) const;                     // Установить курсор _cur2 на позицию index
@@ -74,7 +74,7 @@ private:
   virtual const DataStructure& vAssign(const DataStructure& ds) = 0;        // Соответствует operator =
 
   virtual void vSwap() = 0;                               // Виртуальные функции, соответствующие открытому интерфейсу класса
-  virtual void vReplace() = 0;                            // Должны быть переопределены в производных классах
+  virtual void vMove() = 0;                               // Должны быть переопределены в производных классах
   virtual void vRemove() = 0;
   virtual void vSetCur1(size_t index) const = 0;
   virtual void vSetCur2(size_t index) const = 0;
